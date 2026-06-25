@@ -1,24 +1,44 @@
-interface BadgeProps {
-  variant?: 'success' | 'warning' | 'error' | 'default'
-  children: React.ReactNode
-  size?: 'sm' | 'default'
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@/lib/utils"
+
+const badgeVariants = cva(
+  "inline-flex items-center border px-2 py-0.5 text-xs font-medium transition-colors",
+  {
+    variants: {
+      variant: {
+        default: "border-transparent bg-primary text-primary-foreground",
+        secondary: "border-transparent bg-secondary text-secondary-foreground",
+        destructive: "border-transparent bg-destructive/15 text-destructive border-destructive/20",
+        outline: "text-foreground border-border",
+        success: "bg-green-50 text-green-700 border-green-200 dark:bg-green-950/30 dark:text-green-400 dark:border-green-800",
+        warning: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800",
+        error: "bg-red-50 text-red-700 border-red-200 dark:bg-red-950/30 dark:text-red-400 dark:border-red-800",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+export interface BadgeProps
+  extends React.HTMLAttributes<HTMLSpanElement>,
+    VariantProps<typeof badgeVariants> {
+  size?: "sm" | "default"
 }
 
-const variantStyles = {
-  success: 'bg-[#F0FDF4] text-[#16A34A] border border-[#BBF7D0]',
-  warning: 'bg-[#FFFBEB] text-[#D97706] border border-[#FDE68A]',
-  error: 'bg-[#FEF2F2] text-[#DC2626] border border-[#FECACA]',
-  default: 'bg-[#F4F4F5] text-[#737373] border border-[#E4E4E7]',
-}
-
-export default function Badge({ variant = 'default', children, size = 'default' }: BadgeProps) {
+function Badge({ className, variant, size, ...props }: BadgeProps) {
   return (
     <span
-      className={`inline-flex items-center font-medium rounded-[2px] ${
-        size === 'sm' ? 'px-1.5 py-0.5 text-[10px]' : 'px-2 py-0.5 text-[11px]'
-      } ${variantStyles[variant]}`}
-    >
-      {children}
-    </span>
+      className={cn(
+        badgeVariants({ variant }),
+        size === "sm" && "text-[10px] px-1.5 py-0",
+        className
+      )}
+      {...props}
+    />
   )
 }
+
+export { Badge, badgeVariants }

@@ -1,10 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import TopBar from '@/components/layout/TopBar'
 import FilterTabs from '@/components/ui/FilterTabs'
-import Badge from '@/components/ui/Badge'
-import Button from '@/components/ui/Button'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import SlideOver from '@/components/layout/SlideOver'
 import { products, Product, formatRp, getStatusColor } from '@/lib/mock-data'
 import { Package, Plus, Download } from 'lucide-react'
@@ -20,170 +19,167 @@ export default function InventoryPage() {
     : products.filter((p) => p.category === activeTab)
 
   return (
-    <div>
-      <TopBar
-        title="Inventory"
-        action={
-          <>
-            <Button size="sm" variant="secondary">
-              <Download size={13} strokeWidth={1.75} />
-              Export
-            </Button>
-            <Button size="sm" variant="primary">
-              <Plus size={13} strokeWidth={2} />
-              Tambah Produk
-            </Button>
-          </>
-        }
-      />
-
-      <div className="p-6 space-y-4">
-        {/* Summary cards */}
-        <div className="grid grid-cols-4 gap-3">
-          <div className="border border-[#E5E5E5] rounded-[2px] p-4 bg-white">
-            <p className="text-[11px] text-[#737373] uppercase tracking-wide">Total SKU</p>
-            <p className="text-[22px] font-medium text-[#0A0A0A] mt-1">{products.length}</p>
-          </div>
-          <div className="border border-[#E5E5E5] rounded-[2px] p-4 bg-white">
-            <p className="text-[11px] text-[#737373] uppercase tracking-wide">In Stock</p>
-            <p className="text-[22px] font-medium text-[#16A34A] mt-1">
-              {products.filter((p) => p.status === 'In Stock').length}
-            </p>
-          </div>
-          <div className="border border-[#E5E5E5] rounded-[2px] p-4 bg-white">
-            <p className="text-[11px] text-[#737373] uppercase tracking-wide">Low Stock</p>
-            <p className="text-[22px] font-medium text-[#D97706] mt-1">
-              {products.filter((p) => p.status === 'Low').length}
-            </p>
-          </div>
-          <div className="border border-[#E5E5E5] rounded-[2px] p-4 bg-white">
-            <p className="text-[11px] text-[#737373] uppercase tracking-wide">Out of Stock</p>
-            <p className="text-[22px] font-medium text-[#DC2626] mt-1">
-              {products.filter((p) => p.status === 'Out of Stock').length}
-            </p>
-          </div>
-        </div>
-
-        {/* Filter + Table */}
-        <div className="border border-[#E5E5E5] rounded-[2px] bg-white">
-          <div className="px-5 py-4 border-b border-[#E5E5E5]">
-            <FilterTabs tabs={TABS} active={activeTab} onChange={setActiveTab} />
-          </div>
-
-          <table className="w-full text-[12px]">
-            <thead>
-              <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA]">
-                <th className="text-left px-5 py-3 text-[#737373] font-medium">SKU</th>
-                <th className="text-left px-5 py-3 text-[#737373] font-medium">Nama Produk</th>
-                <th className="text-left px-5 py-3 text-[#737373] font-medium">Koleksi</th>
-                <th className="text-left px-5 py-3 text-[#737373] font-medium">Material</th>
-                <th className="text-right px-5 py-3 text-[#737373] font-medium">Berat</th>
-                <th className="text-right px-5 py-3 text-[#737373] font-medium">Harga</th>
-                <th className="text-right px-5 py-3 text-[#737373] font-medium">Stok</th>
-                <th className="text-right px-5 py-3 text-[#737373] font-medium">Min.</th>
-                <th className="text-left px-5 py-3 text-[#737373] font-medium">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((product) => (
-                <tr
-                  key={product.id}
-                  className="border-b border-[#F0F0F0] last:border-0 hover:bg-[#FAFAFA] cursor-pointer transition-colors"
-                  onClick={() => setSelected(product)}
-                >
-                  <td className="px-5 py-3 font-mono text-[#737373]">{product.sku}</td>
-                  <td className="px-5 py-3 text-[#0A0A0A] font-medium">{product.name}</td>
-                  <td className="px-5 py-3 text-[#737373]">{product.collection}</td>
-                  <td className="px-5 py-3 text-[#737373]">{product.material}</td>
-                  <td className="px-5 py-3 text-right text-[#737373]">{product.weightG}g</td>
-                  <td className="px-5 py-3 text-right text-[#0A0A0A]">{formatRp(product.priceRp)}</td>
-                  <td className={`px-5 py-3 text-right font-medium ${
-                    product.stock === 0 ? 'text-[#DC2626]' : product.stock <= product.reorderPoint ? 'text-[#D97706]' : 'text-[#0A0A0A]'
-                  }`}>{product.stock}</td>
-                  <td className="px-5 py-3 text-right text-[#737373]">{product.reorderPoint}</td>
-                  <td className="px-5 py-3">
-                    <Badge variant={getStatusColor(product.status)} size="sm">{product.status}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div className="space-y-4">
+      {/* Page header */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-[15px] font-medium">Inventory</h1>
+        <div className="flex gap-2">
+          <Button size="sm" variant="secondary">
+            <Download size={13} strokeWidth={1.75} />
+            Export
+          </Button>
+          <Button size="sm" variant="default">
+            <Plus size={13} strokeWidth={2} />
+            Tambah Produk
+          </Button>
         </div>
       </div>
 
+      {/* Summary stats */}
+      <div className="grid grid-cols-4 gap-3">
+        <div className="rounded-md border bg-card px-4 py-3">
+          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Total SKU</p>
+          <p className="text-[22px] font-medium text-foreground mt-0.5">{products.length}</p>
+        </div>
+        <div className="rounded-md border bg-card px-4 py-3">
+          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">In Stock</p>
+          <p className="text-[22px] font-medium text-emerald-600 mt-0.5">
+            {products.filter((p) => p.status === 'In Stock').length}
+          </p>
+        </div>
+        <div className="rounded-md border bg-card px-4 py-3">
+          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Low Stock</p>
+          <p className="text-[22px] font-medium text-amber-600 mt-0.5">
+            {products.filter((p) => p.status === 'Low').length}
+          </p>
+        </div>
+        <div className="rounded-md border bg-card px-4 py-3">
+          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Out of Stock</p>
+          <p className="text-[22px] font-medium text-red-500 mt-0.5">
+            {products.filter((p) => p.status === 'Out of Stock').length}
+          </p>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="rounded-md border bg-card overflow-hidden">
+        <div className="px-4 py-3 border-b">
+          <FilterTabs tabs={TABS} active={activeTab} onChange={setActiveTab} />
+        </div>
+
+        <table className="w-full text-[12px]">
+          <thead>
+            <tr className="border-b bg-muted/40">
+              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">SKU</th>
+              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Nama Produk</th>
+              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Koleksi</th>
+              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Material</th>
+              <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Berat</th>
+              <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Harga</th>
+              <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Stok</th>
+              <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Min.</th>
+              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((product) => (
+              <tr
+                key={product.id}
+                className="border-b last:border-0 hover:bg-muted/30 cursor-pointer transition-colors"
+                onClick={() => setSelected(product)}
+              >
+                <td className="px-4 py-2.5 font-mono text-muted-foreground">{product.sku}</td>
+                <td className="px-4 py-2.5 text-foreground font-medium">{product.name}</td>
+                <td className="px-4 py-2.5 text-muted-foreground">{product.collection}</td>
+                <td className="px-4 py-2.5 text-muted-foreground">{product.material}</td>
+                <td className="px-4 py-2.5 text-right text-muted-foreground">{product.weightG}g</td>
+                <td className="px-4 py-2.5 text-right text-foreground tabular-nums">{formatRp(product.priceRp)}</td>
+                <td className={`px-4 py-2.5 text-right font-medium tabular-nums ${
+                  product.stock === 0 ? 'text-red-500' :
+                  product.stock <= product.reorderPoint ? 'text-amber-600' :
+                  'text-foreground'
+                }`}>{product.stock}</td>
+                <td className="px-4 py-2.5 text-right text-muted-foreground">{product.reorderPoint}</td>
+                <td className="px-4 py-2.5">
+                  <Badge variant={getStatusColor(product.status)} size="sm">{product.status}</Badge>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       {/* Product Detail SlideOver */}
-      <SlideOver
-        open={!!selected}
-        onClose={() => setSelected(null)}
-        title={selected?.name || ''}
-      >
+      <SlideOver open={!!selected} onClose={() => setSelected(null)} title={selected?.name || ''}>
         {selected && (
           <div className="space-y-5">
-            <div className="aspect-square bg-[#FAFAFA] border border-[#E5E5E5] rounded-[2px] flex items-center justify-center">
-              <Package size={48} strokeWidth={1} className="text-[#D4D4D4]" />
+            <div className="aspect-square bg-muted/30 border rounded-md flex items-center justify-center">
+              <Package size={48} strokeWidth={1} className="text-muted-foreground/30" />
             </div>
 
             <div className="grid grid-cols-2 gap-3 text-[13px]">
               <div>
-                <p className="text-[11px] text-[#737373] uppercase tracking-wide mb-1">SKU</p>
-                <p className="font-mono text-[#0A0A0A]">{selected.sku}</p>
+                <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1">SKU</p>
+                <p className="font-mono text-foreground">{selected.sku}</p>
               </div>
               <div>
-                <p className="text-[11px] text-[#737373] uppercase tracking-wide mb-1">Status</p>
+                <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1">Status</p>
                 <Badge variant={getStatusColor(selected.status)}>{selected.status}</Badge>
               </div>
               <div>
-                <p className="text-[11px] text-[#737373] uppercase tracking-wide mb-1">Koleksi</p>
-                <p className="text-[#0A0A0A]">{selected.collection}</p>
+                <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1">Koleksi</p>
+                <p className="text-foreground">{selected.collection}</p>
               </div>
               <div>
-                <p className="text-[11px] text-[#737373] uppercase tracking-wide mb-1">Kategori</p>
-                <p className="text-[#0A0A0A]">{selected.category}</p>
+                <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1">Kategori</p>
+                <p className="text-foreground">{selected.category}</p>
               </div>
               <div>
-                <p className="text-[11px] text-[#737373] uppercase tracking-wide mb-1">Material</p>
-                <p className="text-[#0A0A0A]">{selected.material}</p>
+                <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1">Material</p>
+                <p className="text-foreground">{selected.material}</p>
               </div>
               <div>
-                <p className="text-[11px] text-[#737373] uppercase tracking-wide mb-1">Berat</p>
-                <p className="text-[#0A0A0A]">{selected.weightG}g</p>
+                <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1">Berat</p>
+                <p className="text-foreground">{selected.weightG}g</p>
               </div>
               <div>
-                <p className="text-[11px] text-[#737373] uppercase tracking-wide mb-1">Harga Jual</p>
-                <p className="text-[18px] font-medium text-[#0A0A0A]">{formatRp(selected.priceRp)}</p>
+                <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1">Harga Jual</p>
+                <p className="text-[18px] font-medium text-foreground tabular-nums">{formatRp(selected.priceRp)}</p>
               </div>
               <div>
-                <p className="text-[11px] text-[#737373] uppercase tracking-wide mb-1">Stok Saat Ini</p>
-                <p className={`text-[18px] font-medium ${
-                  selected.stock === 0 ? 'text-[#DC2626]' : selected.stock <= selected.reorderPoint ? 'text-[#D97706]' : 'text-[#16A34A]'
+                <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1">Stok Saat Ini</p>
+                <p className={`text-[18px] font-medium tabular-nums ${
+                  selected.stock === 0 ? 'text-red-500' :
+                  selected.stock <= selected.reorderPoint ? 'text-amber-600' :
+                  'text-emerald-600'
                 }`}>{selected.stock} pcs</p>
               </div>
             </div>
 
-            <div className="border-t border-[#E5E5E5] pt-4">
-              <p className="text-[11px] text-[#737373] uppercase tracking-wide mb-2">Informasi Stok</p>
-              <div className="bg-[#FAFAFA] border border-[#E5E5E5] rounded-[2px] p-3 space-y-2 text-[12px]">
+            <div className="border-t pt-4">
+              <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-2">Informasi Stok</p>
+              <div className="bg-muted/30 border rounded-md p-3 space-y-2 text-[12px]">
                 <div className="flex justify-between">
-                  <span className="text-[#737373]">Reorder Point</span>
-                  <span className="text-[#0A0A0A] font-medium">{selected.reorderPoint} pcs</span>
+                  <span className="text-muted-foreground">Reorder Point</span>
+                  <span className="text-foreground font-medium">{selected.reorderPoint} pcs</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#737373]">Nilai Stok</span>
-                  <span className="text-[#0A0A0A] font-medium">{formatRp(selected.stock * selected.priceRp)}</span>
+                  <span className="text-muted-foreground">Nilai Stok</span>
+                  <span className="text-foreground font-medium tabular-nums">{formatRp(selected.stock * selected.priceRp)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#737373]">Perlu Reorder?</span>
-                  <span className={`font-medium ${selected.stock <= selected.reorderPoint ? 'text-[#DC2626]' : 'text-[#16A34A]'}`}>
+                  <span className="text-muted-foreground">Perlu Reorder?</span>
+                  <span className={`font-medium ${selected.stock <= selected.reorderPoint ? 'text-red-500' : 'text-emerald-600'}`}>
                     {selected.stock <= selected.reorderPoint ? 'Ya' : 'Belum'}
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="border-t border-[#E5E5E5] pt-4">
-              <p className="text-[11px] text-[#737373] uppercase tracking-wide mb-2">Perawatan Perak</p>
-              <p className="text-[12px] text-[#737373] leading-relaxed">
-                Simpan di tempat sejuk dan kering, hindari paparan air dan bahan kimia. Bersihkan dengan kain microfiber lembut. Material {selected.material} memerlukan perawatan rutin setiap 3-6 bulan untuk menjaga kilapnya.
+            <div className="border-t pt-4">
+              <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-2">Perawatan Perak</p>
+              <p className="text-[12px] text-muted-foreground leading-relaxed">
+                Simpan di tempat sejuk dan kering, hindari paparan air dan bahan kimia. Bersihkan dengan kain microfiber lembut. Material {selected.material} memerlukan perawatan rutin setiap 3–6 bulan untuk menjaga kilapnya.
               </p>
             </div>
           </div>

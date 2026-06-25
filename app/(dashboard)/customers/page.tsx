@@ -1,10 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import TopBar from '@/components/layout/TopBar'
 import FilterTabs from '@/components/ui/FilterTabs'
-import Badge from '@/components/ui/Badge'
-import Button from '@/components/ui/Button'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import SlideOver from '@/components/layout/SlideOver'
 import { customers, Customer, formatRp, getStatusColor, orders } from '@/lib/mock-data'
 import { Download, Users } from 'lucide-react'
@@ -28,161 +27,150 @@ export default function CustomersPage() {
     : []
 
   return (
-    <div>
-      <TopBar
-        title="Customers"
-        action={
-          <Button size="sm" variant="secondary">
-            <Download size={13} strokeWidth={1.75} />
-            Export
-          </Button>
-        }
-      />
+    <div className="space-y-4">
+      {/* Page header */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-[15px] font-medium">Customers</h1>
+        <Button size="sm" variant="secondary">
+          <Download size={13} strokeWidth={1.75} />
+          Export
+        </Button>
+      </div>
 
-      <div className="p-6 space-y-4">
-        {/* Summary */}
-        <div className="grid grid-cols-4 gap-3">
-          <div className="border border-[#E5E5E5] rounded-[2px] p-4 bg-white">
-            <p className="text-[11px] text-[#737373] uppercase tracking-wide">Total Pelanggan</p>
-            <p className="text-[22px] font-medium text-[#0A0A0A] mt-1">{customers.length}</p>
-          </div>
-          <div className="border border-[#E5E5E5] rounded-[2px] p-4 bg-white">
-            <p className="text-[11px] text-[#737373] uppercase tracking-wide">VIP</p>
-            <p className="text-[22px] font-medium text-[#16A34A] mt-1">
-              {customers.filter(c => c.segment === 'VIP').length}
-            </p>
-          </div>
-          <div className="border border-[#E5E5E5] rounded-[2px] p-4 bg-white">
-            <p className="text-[11px] text-[#737373] uppercase tracking-wide">Avg. LTV</p>
-            <p className="text-[22px] font-medium text-[#0A0A0A] mt-1">
-              {formatRp(Math.round(customers.reduce((s, c) => s + c.lifetimeValueRp, 0) / customers.length))}
-            </p>
-          </div>
-          <div className="border border-[#E5E5E5] rounded-[2px] p-4 bg-white">
-            <p className="text-[11px] text-[#737373] uppercase tracking-wide">Pelanggan Baru (MTD)</p>
-            <p className="text-[22px] font-medium text-[#0A0A0A] mt-1">3</p>
-          </div>
+      {/* Summary stats */}
+      <div className="grid grid-cols-4 gap-3">
+        <div className="rounded-md border bg-card px-4 py-3">
+          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Total Pelanggan</p>
+          <p className="text-[22px] font-medium text-foreground mt-0.5">{customers.length}</p>
         </div>
-
-        {/* Table */}
-        <div className="border border-[#E5E5E5] rounded-[2px] bg-white">
-          <div className="px-5 py-4 border-b border-[#E5E5E5]">
-            <FilterTabs tabs={TABS} active={activeTab} onChange={setActiveTab} />
-          </div>
-
-          <table className="w-full text-[12px]">
-            <thead>
-              <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA]">
-                <th className="text-left px-5 py-3 text-[#737373] font-medium">Nama</th>
-                <th className="text-left px-5 py-3 text-[#737373] font-medium">Email</th>
-                <th className="text-left px-5 py-3 text-[#737373] font-medium">Lokasi</th>
-                <th className="text-right px-5 py-3 text-[#737373] font-medium">Orders</th>
-                <th className="text-right px-5 py-3 text-[#737373] font-medium">Lifetime Value</th>
-                <th className="text-left px-5 py-3 text-[#737373] font-medium">Pembelian Terakhir</th>
-                <th className="text-left px-5 py-3 text-[#737373] font-medium">Segmen</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((customer) => (
-                <tr
-                  key={customer.id}
-                  className="border-b border-[#F0F0F0] last:border-0 hover:bg-[#FAFAFA] cursor-pointer transition-colors"
-                  onClick={() => setSelected(customer)}
-                >
-                  <td className="px-5 py-3 text-[#0A0A0A] font-medium">{customer.name}</td>
-                  <td className="px-5 py-3 text-[#737373]">{customer.email}</td>
-                  <td className="px-5 py-3 text-[#737373]">
-                    <span className="mr-1.5">{FLAG[customer.country] || ''}</span>
-                    {customer.city}
-                  </td>
-                  <td className="px-5 py-3 text-right text-[#0A0A0A]">{customer.totalOrders}</td>
-                  <td className="px-5 py-3 text-right text-[#0A0A0A] font-medium">{formatRp(customer.lifetimeValueRp)}</td>
-                  <td className="px-5 py-3 text-[#737373]">{customer.lastPurchase}</td>
-                  <td className="px-5 py-3">
-                    <Badge variant={getStatusColor(customer.segment)} size="sm">{customer.segment}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {filtered.length === 0 && (
-            <div className="py-16 text-center">
-              <Users size={32} strokeWidth={1} className="text-[#D4D4D4] mx-auto mb-3" />
-              <p className="text-[13px] text-[#737373]">Tidak ada pelanggan di segmen ini</p>
-            </div>
-          )}
+        <div className="rounded-md border bg-card px-4 py-3">
+          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">VIP</p>
+          <p className="text-[22px] font-medium text-emerald-600 mt-0.5">
+            {customers.filter(c => c.segment === 'VIP').length}
+          </p>
+        </div>
+        <div className="rounded-md border bg-card px-4 py-3">
+          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Avg. LTV</p>
+          <p className="text-[22px] font-medium text-foreground mt-0.5">
+            {formatRp(Math.round(customers.reduce((s, c) => s + c.lifetimeValueRp, 0) / customers.length))}
+          </p>
+        </div>
+        <div className="rounded-md border bg-card px-4 py-3">
+          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Pelanggan Baru (MTD)</p>
+          <p className="text-[22px] font-medium text-foreground mt-0.5">3</p>
         </div>
       </div>
 
+      {/* Table */}
+      <div className="rounded-md border bg-card overflow-hidden">
+        <div className="px-4 py-3 border-b">
+          <FilterTabs tabs={TABS} active={activeTab} onChange={setActiveTab} />
+        </div>
+
+        <table className="w-full text-[12px]">
+          <thead>
+            <tr className="border-b bg-muted/40">
+              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Nama</th>
+              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Email</th>
+              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Lokasi</th>
+              <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Orders</th>
+              <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Lifetime Value</th>
+              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Pembelian Terakhir</th>
+              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Segmen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((customer) => (
+              <tr
+                key={customer.id}
+                className="border-b last:border-0 hover:bg-muted/30 cursor-pointer transition-colors"
+                onClick={() => setSelected(customer)}
+              >
+                <td className="px-4 py-2.5 text-foreground font-medium">{customer.name}</td>
+                <td className="px-4 py-2.5 text-muted-foreground">{customer.email}</td>
+                <td className="px-4 py-2.5 text-muted-foreground">
+                  <span className="mr-1.5">{FLAG[customer.country] || ''}</span>
+                  {customer.city}
+                </td>
+                <td className="px-4 py-2.5 text-right text-foreground tabular-nums">{customer.totalOrders}</td>
+                <td className="px-4 py-2.5 text-right text-foreground font-medium tabular-nums">{formatRp(customer.lifetimeValueRp)}</td>
+                <td className="px-4 py-2.5 text-muted-foreground">{customer.lastPurchase}</td>
+                <td className="px-4 py-2.5">
+                  <Badge variant={getStatusColor(customer.segment)} size="sm">{customer.segment}</Badge>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {filtered.length === 0 && (
+          <div className="py-16 text-center">
+            <Users size={32} strokeWidth={1} className="text-muted-foreground/30 mx-auto mb-3" />
+            <p className="text-[13px] text-muted-foreground">Tidak ada pelanggan di segmen ini</p>
+          </div>
+        )}
+      </div>
+
       {/* Customer Detail SlideOver */}
-      <SlideOver
-        open={!!selected}
-        onClose={() => setSelected(null)}
-        title={selected?.name || ''}
-      >
+      <SlideOver open={!!selected} onClose={() => setSelected(null)} title={selected?.name || ''}>
         {selected && (
           <div className="space-y-5">
-            {/* Header */}
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-[2px] bg-[#F4F4F5] border border-[#E5E5E5] flex items-center justify-center text-[16px] font-medium text-[#737373]">
+              <div className="w-12 h-12 rounded-md bg-muted border flex items-center justify-center text-[16px] font-medium text-muted-foreground">
                 {selected.name.charAt(0)}
               </div>
               <div>
-                <h3 className="text-[15px] font-medium text-[#0A0A0A]">{selected.name}</h3>
-                <p className="text-[12px] text-[#737373]">{selected.email}</p>
+                <h3 className="text-[15px] font-medium text-foreground">{selected.name}</h3>
+                <p className="text-[12px] text-muted-foreground">{selected.email}</p>
                 <div className="mt-1.5">
                   <Badge variant={getStatusColor(selected.segment)}>{selected.segment}</Badge>
                 </div>
               </div>
             </div>
 
-            {/* Stats */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-[#FAFAFA] border border-[#E5E5E5] rounded-[2px] p-3">
-                <p className="text-[11px] text-[#737373]">Lifetime Value</p>
-                <p className="text-[16px] font-medium text-[#0A0A0A] mt-0.5">{formatRp(selected.lifetimeValueRp)}</p>
+              <div className="bg-muted/30 border rounded-md p-3">
+                <p className="text-[11px] text-muted-foreground">Lifetime Value</p>
+                <p className="text-[16px] font-medium text-foreground mt-0.5 tabular-nums">{formatRp(selected.lifetimeValueRp)}</p>
               </div>
-              <div className="bg-[#FAFAFA] border border-[#E5E5E5] rounded-[2px] p-3">
-                <p className="text-[11px] text-[#737373]">Total Orders</p>
-                <p className="text-[16px] font-medium text-[#0A0A0A] mt-0.5">{selected.totalOrders}</p>
+              <div className="bg-muted/30 border rounded-md p-3">
+                <p className="text-[11px] text-muted-foreground">Total Orders</p>
+                <p className="text-[16px] font-medium text-foreground mt-0.5">{selected.totalOrders}</p>
               </div>
-              <div className="bg-[#FAFAFA] border border-[#E5E5E5] rounded-[2px] p-3">
-                <p className="text-[11px] text-[#737373]">Lokasi</p>
-                <p className="text-[13px] font-medium text-[#0A0A0A] mt-0.5">{selected.city}, {selected.country}</p>
+              <div className="bg-muted/30 border rounded-md p-3">
+                <p className="text-[11px] text-muted-foreground">Lokasi</p>
+                <p className="text-[13px] font-medium text-foreground mt-0.5">{selected.city}, {selected.country}</p>
               </div>
-              <div className="bg-[#FAFAFA] border border-[#E5E5E5] rounded-[2px] p-3">
-                <p className="text-[11px] text-[#737373]">Pembelian Terakhir</p>
-                <p className="text-[13px] font-medium text-[#0A0A0A] mt-0.5">{selected.lastPurchase}</p>
+              <div className="bg-muted/30 border rounded-md p-3">
+                <p className="text-[11px] text-muted-foreground">Pembelian Terakhir</p>
+                <p className="text-[13px] font-medium text-foreground mt-0.5">{selected.lastPurchase}</p>
               </div>
             </div>
 
-            {/* Top Products */}
             <div>
-              <p className="text-[11px] text-[#737373] uppercase tracking-wide mb-2">Produk Favorit</p>
+              <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-2">Produk Favorit</p>
               <div className="space-y-1.5">
                 {selected.topProducts.map((p, i) => (
                   <div key={i} className="flex items-center gap-2 text-[12px]">
-                    <span className="text-[#A3A3A3] font-mono">{i + 1}.</span>
-                    <span className="text-[#0A0A0A]">{p}</span>
+                    <span className="text-muted-foreground font-mono">{i + 1}.</span>
+                    <span className="text-foreground">{p}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Order History */}
             {customerOrders.length > 0 && (
               <div>
-                <p className="text-[11px] text-[#737373] uppercase tracking-wide mb-2">Riwayat Pesanan</p>
-                <div className="border border-[#E5E5E5] rounded-[2px] overflow-hidden">
+                <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-2">Riwayat Pesanan</p>
+                <div className="border rounded-md overflow-hidden">
                   {customerOrders.map((order) => (
-                    <div key={order.id} className="flex items-center justify-between px-3 py-2.5 border-b border-[#F0F0F0] last:border-0 text-[12px]">
+                    <div key={order.id} className="flex items-center justify-between px-3 py-2.5 border-b last:border-0 bg-card text-[12px]">
                       <div>
-                        <p className="font-mono text-[#737373]">{order.id.replace('ORD-2025-', '#')}</p>
-                        <p className="text-[11px] text-[#A3A3A3]">{order.date}</p>
+                        <p className="font-mono text-muted-foreground">{order.id.replace('ORD-2025-', '#')}</p>
+                        <p className="text-[11px] text-muted-foreground/70">{order.date}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium text-[#0A0A0A]">{formatRp(order.totalRp)}</p>
+                        <p className="font-medium text-foreground tabular-nums">{formatRp(order.totalRp)}</p>
                         <Badge variant={getStatusColor(order.status)} size="sm">{order.status}</Badge>
                       </div>
                     </div>

@@ -26,16 +26,16 @@ export default function DemandForecastChart({ data, height = 220 }: DemandForeca
   return (
     <ResponsiveContainer width="100%" height={height}>
       <ComposedChart data={data} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
-        <CartesianGrid vertical={false} stroke="#F0F0F0" />
+        <CartesianGrid vertical={false} stroke="var(--border)" strokeOpacity={0.6} />
         <XAxis
           dataKey="week"
-          tick={{ fontSize: 11, fill: '#A3A3A3' }}
+          tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
           axisLine={false}
           tickLine={false}
         />
         <YAxis
           tickFormatter={formatRpShort}
-          tick={{ fontSize: 11, fill: '#A3A3A3' }}
+          tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
           axisLine={false}
           tickLine={false}
           width={40}
@@ -46,33 +46,36 @@ export default function DemandForecastChart({ data, height = 220 }: DemandForeca
             name === 'actualRp' ? 'Aktual' : 'Forecast',
           ]}
           contentStyle={{
-            border: '1px solid #E5E5E5',
-            borderRadius: '2px',
+            border: '1px solid var(--border)',
+            borderRadius: '4px',
             fontSize: 12,
-            backgroundColor: '#fff',
+            backgroundColor: 'var(--card)',
+            color: 'var(--foreground)',
             boxShadow: 'none',
           }}
         />
         <Legend
           formatter={(value) => (value === 'actualRp' ? 'Aktual' : 'Forecast')}
-          wrapperStyle={{ fontSize: 11, color: '#737373' }}
+          wrapperStyle={{ fontSize: 11, color: 'var(--muted-foreground)' }}
         />
         <Line
           type="monotone"
           dataKey="actualRp"
-          stroke="#0A0A0A"
+          stroke="var(--chart-1)"
           strokeWidth={2}
-          dot={{ r: 3, fill: '#0A0A0A' }}
+          dot={{ r: 3, fill: 'var(--chart-1)' }}
           connectNulls={false}
+          isAnimationActive={false}
         />
         <Line
           type="monotone"
           dataKey="forecastRp"
-          stroke="#A3A3A3"
+          stroke="var(--chart-3)"
           strokeWidth={1.5}
           strokeDasharray="5 4"
           dot={false}
           activeDot={{ r: 3 }}
+          isAnimationActive={false}
         />
       </ComposedChart>
     </ResponsiveContainer>

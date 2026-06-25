@@ -28,7 +28,7 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-60 bg-[#FAFAFA] border-r border-[#E5E5E5] flex flex-col z-30">
+    <aside className="fixed left-0 top-0 h-full w-60 bg-white border-r border-[#EBEBEB] flex flex-col z-30">
       {/* Brand */}
       <div className="px-4 pt-5 pb-4">
         <span className="text-[13px] font-medium text-[#0A0A0A] tracking-tight">Hans Jewelry</span>

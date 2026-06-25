@@ -20,7 +20,13 @@ interface DonutChartProps {
   valueFormatter?: (v: number) => string
 }
 
-const COLORS = ['#0A0A0A', '#525252', '#737373', '#A3A3A3', '#D4D4D4']
+const COLORS = [
+  'var(--chart-1)',
+  'var(--chart-2)',
+  'var(--chart-3)',
+  'var(--chart-4)',
+  'var(--chart-5)',
+]
 
 function defaultFormatter(v: number) {
   if (v >= 1000000) return `Rp ${(v / 1000000).toFixed(1)}jt`
@@ -39,6 +45,7 @@ export default function DonutChart({ data, height = 220, valueFormatter = defaul
           outerRadius={80}
           paddingAngle={2}
           dataKey="value"
+          isAnimationActive={false}
         >
           {data.map((_, index) => (
             <Cell key={index} fill={COLORS[index % COLORS.length]} />
@@ -47,16 +54,17 @@ export default function DonutChart({ data, height = 220, valueFormatter = defaul
         <Tooltip
           formatter={(value) => [valueFormatter(Number(value)), '']}
           contentStyle={{
-            border: '1px solid #E5E5E5',
-            borderRadius: '2px',
+            border: '1px solid var(--border)',
+            borderRadius: '4px',
             fontSize: 12,
-            backgroundColor: '#fff',
+            backgroundColor: 'var(--card)',
+            color: 'var(--foreground)',
             boxShadow: 'none',
           }}
         />
         <Legend
           formatter={(value) => value}
-          wrapperStyle={{ fontSize: 11, color: '#737373' }}
+          wrapperStyle={{ fontSize: 11, color: 'var(--muted-foreground)' }}
         />
       </PieChart>
     </ResponsiveContainer>

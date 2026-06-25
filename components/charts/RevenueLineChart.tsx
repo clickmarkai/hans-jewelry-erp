@@ -39,16 +39,16 @@ export default function RevenueLineChart({ data, days = 30 }: RevenueLineChartPr
   return (
     <ResponsiveContainer width="100%" height={200}>
       <LineChart data={chartData} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
-        <CartesianGrid vertical={false} stroke="#F0F0F0" />
+        <CartesianGrid vertical={false} stroke="var(--border)" strokeOpacity={0.6} />
         <XAxis
           dataKey="label"
-          tick={{ fontSize: 11, fill: '#A3A3A3' }}
+          tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
           axisLine={false}
           tickLine={false}
         />
         <YAxis
           tickFormatter={formatRpShort}
-          tick={{ fontSize: 11, fill: '#A3A3A3' }}
+          tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
           axisLine={false}
           tickLine={false}
           width={60}
@@ -57,20 +57,22 @@ export default function RevenueLineChart({ data, days = 30 }: RevenueLineChartPr
           formatter={(value) => [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Revenue']}
           labelFormatter={(_, payload) => payload?.[0]?.payload?.displayDate || ''}
           contentStyle={{
-            border: '1px solid #E5E5E5',
-            borderRadius: '2px',
+            border: '1px solid var(--border)',
+            borderRadius: '4px',
             fontSize: 12,
-            backgroundColor: '#fff',
+            backgroundColor: 'var(--card)',
+            color: 'var(--foreground)',
             boxShadow: 'none',
           }}
         />
         <Line
           type="monotone"
           dataKey="revenueRp"
-          stroke="#0A0A0A"
+          stroke="var(--chart-1)"
           strokeWidth={1.5}
           dot={false}
-          activeDot={{ r: 3, fill: '#0A0A0A' }}
+          activeDot={{ r: 3, fill: 'var(--chart-1)' }}
+          isAnimationActive={false}
         />
       </LineChart>
     </ResponsiveContainer>

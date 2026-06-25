@@ -1,6 +1,6 @@
 import TopBar from '@/components/layout/TopBar'
-import Badge from '@/components/ui/Badge'
-import Button from '@/components/ui/Button'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { collections, formatRp, getStatusColor } from '@/lib/mock-data'
 import { Layers, Plus } from 'lucide-react'
 
@@ -16,7 +16,7 @@ export default function CollectionsPage() {
       <TopBar
         title="Collections"
         action={
-          <Button size="sm" variant="primary">
+          <Button size="sm" variant="default">
             <Plus size={13} strokeWidth={2} />
             Koleksi Baru
           </Button>
@@ -26,19 +26,19 @@ export default function CollectionsPage() {
       <div className="p-6 space-y-6">
         {/* Summary */}
         <div className="grid grid-cols-4 gap-3">
-          <div className="border border-[#E5E5E5] rounded-[2px] p-4 bg-white">
+          <div className="card p-4">
             <p className="text-[11px] text-[#737373] uppercase tracking-wide">Total Koleksi</p>
             <p className="text-[22px] font-medium text-[#0A0A0A] mt-1">{collections.length}</p>
           </div>
-          <div className="border border-[#E5E5E5] rounded-[2px] p-4 bg-white">
+          <div className="card p-4">
             <p className="text-[11px] text-[#737373] uppercase tracking-wide">Aktif</p>
             <p className="text-[22px] font-medium text-[#16A34A] mt-1">{active.length}</p>
           </div>
-          <div className="border border-[#E5E5E5] rounded-[2px] p-4 bg-white">
+          <div className="card p-4">
             <p className="text-[11px] text-[#737373] uppercase tracking-wide">Total SKU</p>
             <p className="text-[22px] font-medium text-[#0A0A0A] mt-1">{collections.reduce((s, c) => s + c.skuCount, 0)}</p>
           </div>
-          <div className="border border-[#E5E5E5] rounded-[2px] p-4 bg-white">
+          <div className="card p-4">
             <p className="text-[11px] text-[#737373] uppercase tracking-wide">Revenue (30d)</p>
             <p className="text-[22px] font-medium text-[#0A0A0A] mt-1">{formatRp(totalRevenue)}</p>
           </div>
@@ -51,7 +51,7 @@ export default function CollectionsPage() {
             {active.map((col) => (
               <div
                 key={col.id}
-                className="border border-[#E5E5E5] rounded-[2px] bg-white overflow-hidden hover:border-[#C0C0C0] transition-colors cursor-pointer"
+                className="card overflow-hidden overflow-hidden hover:border-[#C0C0C0] transition-colors cursor-pointer"
               >
                 {/* Image placeholder */}
                 <div className="aspect-[3/2] bg-[#FAFAFA] border-b border-[#E5E5E5] flex items-center justify-center">
@@ -111,7 +111,7 @@ export default function CollectionsPage() {
               {archived.map((col) => (
                 <div
                   key={col.id}
-                  className="border border-[#E5E5E5] rounded-[2px] bg-white overflow-hidden"
+                  className="card overflow-hidden overflow-hidden"
                 >
                   <div className="aspect-[3/2] bg-[#F4F4F5] flex items-center justify-center">
                     <Layers size={32} strokeWidth={1} className="text-[#D4D4D4]" />
