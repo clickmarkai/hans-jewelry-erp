@@ -10,6 +10,7 @@ import {
   MessageSquareIcon,
   HelpCircleIcon,
   SettingsIcon,
+  WalletIcon,
 } from "lucide-react";
 
 export type SidebarNavItem = {
@@ -39,6 +40,11 @@ export const navGroups: SidebarNavGroup[] = [
         title: "Analytics",
         path: "/analytics",
         icon: <BarChart2Icon />,
+      },
+      {
+        title: "Finance",
+        path: "/finance",
+        icon: <WalletIcon />,
       },
     ],
   },

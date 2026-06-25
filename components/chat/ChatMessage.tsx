@@ -5,6 +5,7 @@ import { getStatusColor } from '@/lib/mock-data'
 import CategoryBarChart from '@/components/charts/CategoryBarChart'
 import DonutChart from '@/components/charts/DonutChart'
 import { Badge } from '@/components/ui/badge'
+import { Sparkles } from 'lucide-react'
 
 interface ChatMessageProps {
   message: ChatMessageType
@@ -17,28 +18,31 @@ type DonutDataItem = { name: string; value: number }
 export default function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === 'user'
 
+  if (isUser) {
+    return (
+      <div className="flex justify-end">
+        <div className="flex items-end gap-2.5 max-w-[75%]">
+          <div className="px-4 py-3 rounded-2xl rounded-br-sm bg-indigo-600 text-white text-sm leading-relaxed shadow-sm shadow-indigo-500/20">
+            {message.content}
+          </div>
+          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center text-[11px] font-semibold text-white shrink-0 mb-0.5">
+            H
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className={`flex gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
-      {/* Avatar */}
-      <div
-        className={`w-7 h-7 rounded-md shrink-0 flex items-center justify-center text-[11px] font-medium mt-0.5 ${
-          isUser
-            ? 'bg-foreground text-background'
-            : 'bg-muted text-muted-foreground border'
-        }`}
-      >
-        {isUser ? 'H' : 'AI'}
+    <div className="flex items-start gap-3 max-w-[85%]">
+      {/* AI Avatar */}
+      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shrink-0 mt-0.5">
+        <Sparkles size={13} strokeWidth={2} className="text-white" />
       </div>
 
       {/* Content */}
-      <div className={`max-w-[80%] ${isUser ? 'items-end' : 'items-start'} flex flex-col gap-2`}>
-        <div
-          className={`px-4 py-3 rounded-md text-[13px] leading-relaxed ${
-            isUser
-              ? 'bg-foreground text-background'
-              : 'bg-muted text-foreground border'
-          }`}
-        >
+      <div className="flex flex-col gap-3 min-w-0">
+        <div className="px-4 py-3 rounded-2xl rounded-tl-sm bg-card border text-sm leading-relaxed text-foreground">
           {message.content.split('\n').map((line, i) => {
             const formatted = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
             return (
@@ -53,9 +57,9 @@ export default function ChatMessage({ message }: ChatMessageProps) {
           })}
         </div>
 
-        {/* Chart/Table inline rendering */}
+        {/* Inline chart */}
         {message.chartType === 'bar' && message.chartData != null && (
-          <div className="w-full border rounded-md bg-card p-4">
+          <div className="w-full border rounded-xl bg-card p-4 shadow-sm">
             <CategoryBarChart
               data={(message.chartData as BarDataItem[]).map((d) => ({
                 name: d.name,
@@ -69,7 +73,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
         )}
 
         {message.chartType === 'donut' && message.chartData && (
-          <div className="w-full border rounded-md bg-card p-4">
+          <div className="w-full border rounded-xl bg-card p-4 shadow-sm">
             <DonutChart
               data={message.chartData as DonutDataItem[]}
               height={200}
@@ -78,25 +82,25 @@ export default function ChatMessage({ message }: ChatMessageProps) {
         )}
 
         {message.chartType === 'table' && message.chartData && (
-          <div className="w-full border rounded-md overflow-hidden">
+          <div className="w-full border rounded-xl overflow-hidden shadow-sm">
             <table className="w-full text-[12px]">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left px-3 py-2 text-muted-foreground font-medium">SKU</th>
-                  <th className="text-left px-3 py-2 text-muted-foreground font-medium">Produk</th>
-                  <th className="text-right px-3 py-2 text-muted-foreground font-medium">Stok</th>
-                  <th className="text-right px-3 py-2 text-muted-foreground font-medium">Min.</th>
-                  <th className="text-left px-3 py-2 text-muted-foreground font-medium">Status</th>
+                  <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">SKU</th>
+                  <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Product</th>
+                  <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Stock</th>
+                  <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Min.</th>
+                  <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {(message.chartData as TableDataItem[]).map((row, i) => (
-                  <tr key={i} className="border-b last:border-0 bg-card">
-                    <td className="px-3 py-2 text-muted-foreground font-mono">{row.sku}</td>
-                    <td className="px-3 py-2 text-foreground">{row.name}</td>
-                    <td className="px-3 py-2 text-right text-foreground font-medium">{row.stock}</td>
-                    <td className="px-3 py-2 text-right text-muted-foreground">{row.reorderPoint}</td>
-                    <td className="px-3 py-2">
+                  <tr key={i} className="border-b last:border-0 bg-card hover:bg-muted/30 transition-colors">
+                    <td className="px-4 py-2.5 text-muted-foreground font-mono text-[11px]">{row.sku}</td>
+                    <td className="px-4 py-2.5 text-foreground font-medium">{row.name}</td>
+                    <td className="px-4 py-2.5 text-right text-foreground font-semibold">{row.stock}</td>
+                    <td className="px-4 py-2.5 text-right text-muted-foreground">{row.reorderPoint}</td>
+                    <td className="px-4 py-2.5">
                       <Badge variant={getStatusColor(row.status)} size="sm">{row.status}</Badge>
                     </td>
                   </tr>
