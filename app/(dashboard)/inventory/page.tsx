@@ -10,6 +10,20 @@ import { Package, Plus, Download } from 'lucide-react'
 
 const TABS = ['All', 'Rings', 'Necklaces', 'Earrings', 'Bracelets', 'Pendants']
 
+function StockBar({ stock, reorderPoint }: { stock: number; reorderPoint: number }) {
+  const max = Math.max(reorderPoint * 3, stock, 1)
+  const pct = Math.min((stock / max) * 100, 100)
+  const color = stock === 0 ? 'bg-red-500' : stock <= reorderPoint ? 'bg-amber-400' : 'bg-emerald-500'
+  return (
+    <div className="flex items-center gap-2">
+      <span className="tabular-nums font-medium w-6 text-right">{stock}</span>
+      <div className="w-16 h-1.5 rounded-full bg-muted overflow-hidden">
+        <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
+      </div>
+    </div>
+  )
+}
+
 export default function InventoryPage() {
   const [activeTab, setActiveTab] = useState('All')
   const [selected, setSelected] = useState<Product | null>(null)
@@ -22,7 +36,7 @@ export default function InventoryPage() {
     <div className="space-y-4">
       {/* Page header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-[15px] font-medium">Inventory</h1>
+        <h1 className="text-lg font-semibold">Inventory</h1>
         <div className="flex gap-2">
           <Button size="sm" variant="secondary">
             <Download size={13} strokeWidth={1.75} />
@@ -36,26 +50,26 @@ export default function InventoryPage() {
       </div>
 
       {/* Summary stats */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-md border bg-card px-4 py-3">
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Total SKU</p>
-          <p className="text-[22px] font-medium text-foreground mt-0.5">{products.length}</p>
+          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Total SKU</p>
+          <p className="text-2xl font-semibold text-foreground mt-0.5">{products.length}</p>
         </div>
         <div className="rounded-md border bg-card px-4 py-3">
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">In Stock</p>
-          <p className="text-[22px] font-medium text-emerald-600 mt-0.5">
+          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">In Stock</p>
+          <p className="text-2xl font-semibold text-emerald-600 mt-0.5">
             {products.filter((p) => p.status === 'In Stock').length}
           </p>
         </div>
         <div className="rounded-md border bg-card px-4 py-3">
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Low Stock</p>
-          <p className="text-[22px] font-medium text-amber-600 mt-0.5">
+          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Low Stock</p>
+          <p className="text-2xl font-semibold text-amber-600 mt-0.5">
             {products.filter((p) => p.status === 'Low').length}
           </p>
         </div>
         <div className="rounded-md border bg-card px-4 py-3">
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Out of Stock</p>
-          <p className="text-[22px] font-medium text-red-500 mt-0.5">
+          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Out of Stock</p>
+          <p className="text-2xl font-semibold text-red-500 mt-0.5">
             {products.filter((p) => p.status === 'Out of Stock').length}
           </p>
         </div>
@@ -67,46 +81,46 @@ export default function InventoryPage() {
           <FilterTabs tabs={TABS} active={activeTab} onChange={setActiveTab} />
         </div>
 
-        <table className="w-full text-[12px]">
-          <thead>
-            <tr className="border-b bg-muted/40">
-              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">SKU</th>
-              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Nama Produk</th>
-              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Koleksi</th>
-              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Material</th>
-              <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Berat</th>
-              <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Harga</th>
-              <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Stok</th>
-              <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Min.</th>
-              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((product) => (
-              <tr
-                key={product.id}
-                className="border-b last:border-0 hover:bg-muted/30 cursor-pointer transition-colors"
-                onClick={() => setSelected(product)}
-              >
-                <td className="px-4 py-2.5 font-mono text-muted-foreground">{product.sku}</td>
-                <td className="px-4 py-2.5 text-foreground font-medium">{product.name}</td>
-                <td className="px-4 py-2.5 text-muted-foreground">{product.collection}</td>
-                <td className="px-4 py-2.5 text-muted-foreground">{product.material}</td>
-                <td className="px-4 py-2.5 text-right text-muted-foreground">{product.weightG}g</td>
-                <td className="px-4 py-2.5 text-right text-foreground tabular-nums">{formatRp(product.priceRp)}</td>
-                <td className={`px-4 py-2.5 text-right font-medium tabular-nums ${
-                  product.stock === 0 ? 'text-red-500' :
-                  product.stock <= product.reorderPoint ? 'text-amber-600' :
-                  'text-foreground'
-                }`}>{product.stock}</td>
-                <td className="px-4 py-2.5 text-right text-muted-foreground">{product.reorderPoint}</td>
-                <td className="px-4 py-2.5">
-                  <Badge variant={getStatusColor(product.status)} size="sm">{product.status}</Badge>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-[13px]">
+            <thead>
+              <tr className="border-b bg-muted/40">
+                <th className="text-left px-4 py-3 text-muted-foreground font-medium">SKU</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Nama Produk</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Koleksi</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Material</th>
+                <th className="text-right px-4 py-3 text-muted-foreground font-medium">Berat</th>
+                <th className="text-right px-4 py-3 text-muted-foreground font-medium">Harga</th>
+                <th className="text-right px-4 py-3 text-muted-foreground font-medium">Stok</th>
+                <th className="text-right px-4 py-3 text-muted-foreground font-medium">Min.</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filtered.map((product) => (
+                <tr
+                  key={product.id}
+                  className="border-b last:border-0 hover:bg-muted/30 cursor-pointer transition-colors"
+                  onClick={() => setSelected(product)}
+                >
+                  <td className="px-4 py-3 font-mono text-muted-foreground">{product.sku}</td>
+                  <td className="px-4 py-3 text-foreground font-medium">{product.name}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{product.collection}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{product.material}</td>
+                  <td className="px-4 py-3 text-right text-muted-foreground">{product.weightG}g</td>
+                  <td className="px-4 py-3 text-right text-foreground tabular-nums">{formatRp(product.priceRp)}</td>
+                  <td className="px-4 py-3 text-right">
+                    <StockBar stock={product.stock} reorderPoint={product.reorderPoint} />
+                  </td>
+                  <td className="px-4 py-3 text-right text-muted-foreground">{product.reorderPoint}</td>
+                  <td className="px-4 py-3">
+                    <Badge variant={getStatusColor(product.status)} size="sm">{product.status}</Badge>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Product Detail SlideOver */}

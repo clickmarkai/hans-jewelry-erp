@@ -14,6 +14,25 @@ const FLAG: Record<string, string> = {
   ID: '🇮🇩', NL: '🇳🇱', AU: '🇦🇺', DE: '🇩🇪', SG: '🇸🇬', JP: '🇯🇵', CH: '🇨🇭',
 }
 
+function Avatar({ name, size = 'sm' }: { name: string; size?: 'sm' | 'md' }) {
+  const colors = [
+    'bg-indigo-100 text-indigo-700',
+    'bg-amber-100 text-amber-700',
+    'bg-emerald-100 text-emerald-700',
+    'bg-pink-100 text-pink-700',
+    'bg-violet-100 text-violet-700',
+    'bg-cyan-100 text-cyan-700',
+  ]
+  const color = colors[name.charCodeAt(0) % colors.length]
+  const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+  const sz = size === 'sm' ? 'w-7 h-7 text-[11px]' : 'w-9 h-9 text-xs'
+  return (
+    <div className={`${sz} ${color} rounded-full flex items-center justify-center font-medium flex-shrink-0`}>
+      {initials}
+    </div>
+  )
+}
+
 export default function CustomersPage() {
   const [activeTab, setActiveTab] = useState('All')
   const [selected, setSelected] = useState<Customer | null>(null)
@@ -30,7 +49,7 @@ export default function CustomersPage() {
     <div className="space-y-4">
       {/* Page header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-[15px] font-medium">Customers</h1>
+        <h1 className="text-lg font-semibold">Customers</h1>
         <Button size="sm" variant="secondary">
           <Download size={13} strokeWidth={1.75} />
           Export
@@ -38,26 +57,26 @@ export default function CustomersPage() {
       </div>
 
       {/* Summary stats */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-md border bg-card px-4 py-3">
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Total Pelanggan</p>
-          <p className="text-[22px] font-medium text-foreground mt-0.5">{customers.length}</p>
+          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Total Pelanggan</p>
+          <p className="text-2xl font-semibold text-foreground mt-0.5">{customers.length}</p>
         </div>
         <div className="rounded-md border bg-card px-4 py-3">
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">VIP</p>
-          <p className="text-[22px] font-medium text-emerald-600 mt-0.5">
+          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">VIP</p>
+          <p className="text-2xl font-semibold text-emerald-600 mt-0.5">
             {customers.filter(c => c.segment === 'VIP').length}
           </p>
         </div>
         <div className="rounded-md border bg-card px-4 py-3">
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Avg. LTV</p>
-          <p className="text-[22px] font-medium text-foreground mt-0.5">
+          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Avg. LTV</p>
+          <p className="text-2xl font-semibold text-foreground mt-0.5">
             {formatRp(Math.round(customers.reduce((s, c) => s + c.lifetimeValueRp, 0) / customers.length))}
           </p>
         </div>
         <div className="rounded-md border bg-card px-4 py-3">
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Pelanggan Baru (MTD)</p>
-          <p className="text-[22px] font-medium text-foreground mt-0.5">3</p>
+          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Pelanggan Baru (MTD)</p>
+          <p className="text-2xl font-semibold text-foreground mt-0.5">3</p>
         </div>
       </div>
 
@@ -67,41 +86,52 @@ export default function CustomersPage() {
           <FilterTabs tabs={TABS} active={activeTab} onChange={setActiveTab} />
         </div>
 
-        <table className="w-full text-[12px]">
-          <thead>
-            <tr className="border-b bg-muted/40">
-              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Nama</th>
-              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Email</th>
-              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Lokasi</th>
-              <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Orders</th>
-              <th className="text-right px-4 py-2.5 text-muted-foreground font-medium">Lifetime Value</th>
-              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Pembelian Terakhir</th>
-              <th className="text-left px-4 py-2.5 text-muted-foreground font-medium">Segmen</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((customer) => (
-              <tr
-                key={customer.id}
-                className="border-b last:border-0 hover:bg-muted/30 cursor-pointer transition-colors"
-                onClick={() => setSelected(customer)}
-              >
-                <td className="px-4 py-2.5 text-foreground font-medium">{customer.name}</td>
-                <td className="px-4 py-2.5 text-muted-foreground">{customer.email}</td>
-                <td className="px-4 py-2.5 text-muted-foreground">
-                  <span className="mr-1.5">{FLAG[customer.country] || ''}</span>
-                  {customer.city}
-                </td>
-                <td className="px-4 py-2.5 text-right text-foreground tabular-nums">{customer.totalOrders}</td>
-                <td className="px-4 py-2.5 text-right text-foreground font-medium tabular-nums">{formatRp(customer.lifetimeValueRp)}</td>
-                <td className="px-4 py-2.5 text-muted-foreground">{customer.lastPurchase}</td>
-                <td className="px-4 py-2.5">
-                  <Badge variant={getStatusColor(customer.segment)} size="sm">{customer.segment}</Badge>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-[13px]">
+            <thead>
+              <tr className="border-b bg-muted/40">
+                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Nama</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Email</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Lokasi</th>
+                <th className="text-right px-4 py-3 text-muted-foreground font-medium">Orders</th>
+                <th className="text-right px-4 py-3 text-muted-foreground font-medium">Lifetime Value</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Pembelian Terakhir</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Segmen</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filtered.map((customer) => (
+                <tr
+                  key={customer.id}
+                  className="border-b last:border-0 hover:bg-muted/30 cursor-pointer transition-colors"
+                  onClick={() => setSelected(customer)}
+                >
+                  <td className="px-4 py-3 text-foreground font-medium">
+                    <div className="flex items-center gap-2.5">
+                      <Avatar name={customer.name} />
+                      <span>{customer.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-muted-foreground">{customer.email}</td>
+                  <td className="px-4 py-3 text-muted-foreground">
+                    <span className="mr-1.5">{FLAG[customer.country] || ''}</span>
+                    {customer.city}
+                  </td>
+                  <td className="px-4 py-3 text-right text-foreground tabular-nums">{customer.totalOrders}</td>
+                  <td className={`px-4 py-3 text-right tabular-nums ${
+                    customer.segment === 'VIP'
+                      ? 'font-semibold text-indigo-600 dark:text-indigo-400'
+                      : 'font-medium text-foreground'
+                  }`}>{formatRp(customer.lifetimeValueRp)}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{customer.lastPurchase}</td>
+                  <td className="px-4 py-3">
+                    <Badge variant={getStatusColor(customer.segment)} size="sm">{customer.segment}</Badge>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {filtered.length === 0 && (
           <div className="py-16 text-center">

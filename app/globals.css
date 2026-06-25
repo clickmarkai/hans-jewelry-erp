@@ -4,7 +4,7 @@
 
 :root {
   /* Page background is a light gray so white cards feel elevated */
-  --background: oklch(0.97 0 0);
+  --background: oklch(0.975 0.002 90);
   --foreground: oklch(0.13 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.13 0 0);
@@ -23,7 +23,7 @@
   --border: oklch(0.905 0 0);
   --input: oklch(0.905 0 0);
   --ring: oklch(0.60 0.18 264);
-  --radius: 0.375rem;
+  --radius: 0.5rem;
 
   /* Accent chart colors — indigo blue as primary */
   --chart-1: oklch(0.546 0.198 264);
@@ -81,8 +81,7 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -139,7 +138,7 @@
     margin: 0;
     background-color: var(--background);
     color: var(--foreground);
-    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
