@@ -80,7 +80,7 @@
 
 @theme inline {
   --font-sans: var(--font-sans);
-  --font-serif: var(--font-display);
+  --font-serif: var(--font-sans);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -191,8 +191,8 @@
   }
 
   .maison-display {
-    font-family: var(--font-display), ui-serif, Georgia, serif;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
     font-weight: 600;
-    letter-spacing: 0;
+    letter-spacing: -0.01em;
   }
 }
