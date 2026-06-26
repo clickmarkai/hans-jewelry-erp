@@ -33,9 +33,6 @@ const SLICE_PALETTE = [
 /** At most four named slices; remaining share rolls into a fifth slice, “Others”. */
 const MAX_NAMED_SLICES = 4;
 
-/** Rolling window for the mix (days). */
-const periodDays = 7;
-
 const data = [
 	{ category: "Classic Silver", share: 32 },
 	{ category: "Bridal", share: 26 },

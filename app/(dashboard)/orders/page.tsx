@@ -19,18 +19,18 @@ const chipColor: Record<string, string> = {
 
 function Avatar({ name, size = 'sm' }: { name: string; size?: 'sm' | 'md' }) {
   const colors = [
-    'bg-indigo-100 text-indigo-700',
-    'bg-amber-100 text-amber-700',
-    'bg-emerald-100 text-emerald-700',
-    'bg-pink-100 text-pink-700',
-    'bg-violet-100 text-violet-700',
-    'bg-cyan-100 text-cyan-700',
+    'bg-primary/10 text-primary',
+    'bg-amber-100 text-amber-800',
+    'bg-emerald-50 text-emerald-700',
+    'bg-rose-50 text-rose-700',
+    'bg-stone-100 text-stone-700',
+    'bg-slate-100 text-slate-700',
   ]
   const color = colors[name.charCodeAt(0) % colors.length]
   const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
   const sz = size === 'sm' ? 'w-7 h-7 text-[11px]' : 'w-9 h-9 text-xs'
   return (
-    <div className={`${sz} ${color} rounded-full flex items-center justify-center font-medium flex-shrink-0`}>
+    <div className={`${sz} ${color} flex flex-shrink-0 items-center justify-center rounded-md font-semibold`}>
       {initials}
     </div>
   )
@@ -57,7 +57,10 @@ export default function OrdersPage() {
     <div className="space-y-4">
       {/* Page header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold">Orders</h1>
+        <div>
+          <p className="maison-kicker">Order workflow</p>
+          <h1 className="font-serif text-3xl font-semibold">Orders</h1>
+        </div>
         <Button size="sm" variant="secondary">
           <Download size={13} strokeWidth={1.75} />
           Export
@@ -69,7 +72,7 @@ export default function OrdersPage() {
         {(['Pending', 'Processing', 'Shipped', 'Delivered', 'Returned'] as const).map((status) => (
           <div key={status} className="rounded-md border bg-card px-4 py-3">
             <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">{status}</p>
-            <p className={`text-2xl font-semibold mt-0.5 ${
+            <p className={`mt-0.5 font-serif text-[28px] font-semibold ${
               status === 'Delivered'  ? 'text-emerald-600' :
               status === 'Returned'   ? 'text-red-500' :
               status === 'Pending'    ? 'text-amber-600' :
@@ -127,7 +130,7 @@ export default function OrdersPage() {
                     <td className="px-4 py-3 text-right text-muted-foreground">{order.items.length}</td>
                     <td className="px-4 py-3 text-right text-foreground font-medium tabular-nums">{formatRp(order.totalRp)}</td>
                     <td className="px-4 py-3">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${chipColor[order.channel] || 'bg-slate-100 text-slate-600'}`}>
+                      <span className={`inline-flex items-center rounded-[5px] px-2 py-0.5 text-[11px] font-semibold ${chipColor[order.channel] || 'bg-slate-100 text-slate-600'}`}>
                         {order.channel}
                       </span>
                     </td>

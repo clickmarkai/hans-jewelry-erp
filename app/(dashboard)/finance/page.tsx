@@ -1,4 +1,3 @@
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { TrendingUp, DollarSign, Percent, ArrowUpRight } from 'lucide-react'
 
@@ -21,7 +20,7 @@ const collectionRevenue = [
 
 const channelRevenue = [
   { channel: 'Tokopedia', revenue: 14800000, pct: 38, orders: 28, color: 'bg-emerald-500' },
-  { channel: 'Website', revenue: 11550000, pct: 30, orders: 19, color: 'bg-indigo-500' },
+  { channel: 'Website', revenue: 11550000, pct: 30, orders: 19, color: 'bg-primary' },
   { channel: 'Shopee', revenue: 8500000, pct: 22, orders: 14, color: 'bg-orange-500' },
   { channel: 'Instagram', revenue: 3600000, pct: 10, orders: 6, color: 'bg-pink-500' },
 ]
@@ -42,7 +41,8 @@ export default function FinancePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold">Finance & Reports</h1>
+          <p className="maison-kicker">Revenue control</p>
+          <h1 className="font-serif text-3xl font-semibold">Finance & Reports</h1>
           <p className="text-sm text-muted-foreground mt-0.5">June 2025 · YTD summary</p>
         </div>
       </div>
@@ -52,56 +52,56 @@ export default function FinancePage() {
         <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground font-medium">MTD Revenue</span>
-              <div className="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 flex items-center justify-center">
+              <span className="maison-kicker">MTD Revenue</span>
+              <div className="flex size-8 items-center justify-center rounded-md border border-current/10 bg-primary/10 text-primary">
                 <DollarSign size={13} strokeWidth={2} />
               </div>
             </div>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-semibold tabular-nums">{formatRp(currentMonth.revenue)}</p>
+            <p className="font-serif text-[28px] font-semibold tabular-nums">{formatRp(currentMonth.revenue)}</p>
             <p className="text-xs text-emerald-600 mt-1">+{revenueGrowth}% vs May</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground font-medium">Gross Profit</span>
-              <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 flex items-center justify-center">
+              <span className="maison-kicker">Gross Profit</span>
+              <div className="flex size-8 items-center justify-center rounded-md border border-current/10 bg-emerald-50 text-emerald-700">
                 <TrendingUp size={13} strokeWidth={2} />
               </div>
             </div>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-semibold tabular-nums">{formatRp(currentMonth.grossProfit)}</p>
+            <p className="font-serif text-[28px] font-semibold tabular-nums">{formatRp(currentMonth.grossProfit)}</p>
             <p className="text-xs text-muted-foreground mt-1">After COGS</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground font-medium">Gross Margin</span>
-              <div className="w-7 h-7 rounded-lg bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400 flex items-center justify-center">
+              <span className="maison-kicker">Gross Margin</span>
+              <div className="flex size-8 items-center justify-center rounded-md border border-current/10 bg-rose-50 text-rose-700">
                 <Percent size={13} strokeWidth={2} />
               </div>
             </div>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-semibold tabular-nums">{margin}%</p>
+            <p className="font-serif text-[28px] font-semibold tabular-nums">{margin}%</p>
             <p className="text-xs text-emerald-600 mt-1">Healthy margin</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground font-medium">Total Orders</span>
-              <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400 flex items-center justify-center">
+              <span className="maison-kicker">Total Orders</span>
+              <div className="flex size-8 items-center justify-center rounded-md border border-current/10 bg-amber-50 text-amber-800">
                 <ArrowUpRight size={13} strokeWidth={2} />
               </div>
             </div>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-semibold tabular-nums">{currentMonth.orders}</p>
+            <p className="font-serif text-[28px] font-semibold tabular-nums">{currentMonth.orders}</p>
             <p className="text-xs text-muted-foreground mt-1">This month</p>
           </CardContent>
         </Card>
@@ -111,7 +111,7 @@ export default function FinancePage() {
         {/* Monthly Revenue Table */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-semibold">Monthly Performance (2025)</CardTitle>
+            <CardTitle className="text-xl">Monthly Performance (2025)</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <table className="w-full text-[13px]">
@@ -129,8 +129,8 @@ export default function FinancePage() {
                   const mg = Math.round((row.grossProfit / row.revenue) * 100)
                   const isLatest = i === monthlyData.length - 1
                   return (
-                    <tr key={row.month} className={`border-b last:border-0 hover:bg-muted/30 transition-colors ${isLatest ? 'bg-indigo-50/50 dark:bg-indigo-500/5' : ''}`}>
-                      <td className="px-4 py-3 font-medium">{row.month} {isLatest && <span className="ml-1 text-[10px] bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400 px-1.5 py-0.5 rounded-full font-medium">Current</span>}</td>
+                    <tr key={row.month} className={`border-b last:border-0 hover:bg-muted/30 transition-colors ${isLatest ? 'bg-primary/5' : ''}`}>
+                      <td className="px-4 py-3 font-medium">{row.month} {isLatest && <span className="ml-1 rounded-[5px] bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">Current</span>}</td>
                       <td className="px-4 py-3 text-right font-medium tabular-nums">{formatRp(row.revenue)}</td>
                       <td className="px-4 py-3 text-right text-muted-foreground tabular-nums">{formatRp(row.cogs)}</td>
                       <td className="px-4 py-3 text-right font-semibold text-emerald-600 tabular-nums">{formatRp(row.grossProfit)}</td>
@@ -151,7 +151,7 @@ export default function FinancePage() {
           {/* Revenue by Collection */}
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold">Revenue by Collection (MTD)</CardTitle>
+              <CardTitle className="text-xl">Revenue by Collection (MTD)</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {collectionRevenue.map((c) => (
@@ -167,7 +167,7 @@ export default function FinancePage() {
                       </div>
                     </div>
                     <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-                      <div className="h-full rounded-full bg-indigo-500" style={{ width: `${c.pct}%` }} />
+                      <div className="h-full rounded-full bg-primary" style={{ width: `${c.pct}%` }} />
                     </div>
                   </div>
                   <span className="text-xs text-muted-foreground w-8 text-right">{c.pct}%</span>
@@ -179,7 +179,7 @@ export default function FinancePage() {
           {/* Revenue by Channel */}
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold">Revenue by Channel (MTD)</CardTitle>
+              <CardTitle className="text-xl">Revenue by Channel (MTD)</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2.5">
               {channelRevenue.map((c) => (

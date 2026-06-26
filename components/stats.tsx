@@ -36,9 +36,9 @@ const stats = [
     delta: 12,
     hint: "vs bulan lalu",
     icon: TrendingUp,
-    iconBg: "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400",
+    iconBg: "bg-primary/10 text-primary",
     sparkline: [820, 932, 901, 1134, 1290, 1330, 1520],
-    sparkColor: "#6366f1",
+    sparkColor: "oklch(0.42 0.13 22)",
   },
   {
     label: "Active Orders",
@@ -46,7 +46,7 @@ const stats = [
     delta: 3,
     hint: "this week",
     icon: ShoppingBag,
-    iconBg: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+    iconBg: "bg-amber-100 text-amber-800",
     sparkline: [38, 42, 39, 44, 41, 45, 47],
     sparkColor: "#f59e0b",
   },
@@ -56,7 +56,7 @@ const stats = [
     delta: -2,
     hint: "needs reorder",
     icon: AlertTriangle,
-    iconBg: "bg-red-50 text-red-500 dark:bg-red-500/10 dark:text-red-400",
+    iconBg: "bg-red-50 text-red-600",
     sparkline: [4, 5, 7, 6, 5, 7, 6],
     sparkColor: "#ef4444",
   },
@@ -66,7 +66,7 @@ const stats = [
     delta: 4,
     hint: "vs bulan lalu",
     icon: UserPlus,
-    iconBg: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+    iconBg: "bg-emerald-50 text-emerald-700",
     sparkline: [6, 8, 7, 9, 10, 11, 12],
     sparkColor: "#10b981",
   },
@@ -85,21 +85,21 @@ export function DashboardStats() {
 function StatCard({ stat }: { stat: (typeof stats)[number] }) {
   const { label, value, delta, hint, icon: Icon, iconBg, sparkline, sparkColor } = stat;
   return (
-    <Card className="relative overflow-hidden">
-      <CardHeader className="pb-2">
+    <Card className="relative overflow-hidden border-x-0 border-y bg-card/70 shadow-none first:border-l sm:border-x">
+      <CardHeader className="p-4 pb-1">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-muted-foreground">{label}</span>
-          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${iconBg}`}>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">{label}</span>
+          <div className={`flex size-8 items-center justify-center rounded-md border border-current/10 ${iconBg}`}>
             <Icon size={15} strokeWidth={2} />
           </div>
         </div>
       </CardHeader>
-      <CardContent className="pb-2">
-        <p className="text-2xl font-semibold tabular-nums tracking-tight">
+      <CardContent className="px-4 pb-1 pt-0">
+        <p className="font-serif text-[25px] font-semibold tabular-nums tracking-normal">
           {value}
         </p>
       </CardContent>
-      <CardFooter className="flex items-center justify-between">
+      <CardFooter className="flex items-center justify-between px-4 pb-3 pt-0">
         <div className="flex items-center gap-1.5 text-xs">
           <Delta value={delta} variant="default">
             <DeltaIcon />

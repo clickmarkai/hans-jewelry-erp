@@ -74,9 +74,13 @@ export function RevenueChart() {
   }
 
   return (
-    <Card className="md:col-span-2 lg:col-span-4">
+    <Card className="h-full">
       <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <CardTitle className="text-balance">Revenue</CardTitle>
+        <div>
+          <p className="maison-kicker">Revenue overview</p>
+          <CardTitle className="mt-1 text-balance">Rp 38.4jt</CardTitle>
+          <p className="mt-1 text-xs text-muted-foreground">Channel revenue trend across the selected period.</p>
+        </div>
         <Select
           onValueChange={(v) => setPeriodDays(Number(v) as PeriodDays)}
           value={String(periodDays)}
@@ -99,7 +103,7 @@ export function RevenueChart() {
       </CardHeader>
       <CardContent>
         <ChartContainer
-          className="aspect-auto h-60 w-full p-0"
+          className="aspect-auto h-[248px] w-full p-0"
           config={chartConfig}
         >
           <AreaChart
@@ -113,7 +117,7 @@ export function RevenueChart() {
                 <stop offset="100%" stopColor="var(--color-revenueRp)" stopOpacity={0.02} />
               </linearGradient>
             </defs>
-            <CartesianGrid horizontal={false} strokeDasharray="2 2" />
+            <CartesianGrid stroke="var(--border)" vertical={false} />
             <XAxis
               axisLine={false}
               dataKey="date"
@@ -150,14 +154,14 @@ export function RevenueChart() {
               dot={false}
               fill={`url(#${idAreaGradient})`}
               stroke="var(--color-revenueRp)"
-              strokeWidth={2}
+              strokeWidth={2.5}
               type="monotone"
               isAnimationActive={false}
             />
           </AreaChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex items-center justify-between">
+      <CardFooter className="flex items-center justify-between border-t pt-4">
         <div className="flex items-center gap-1 text-muted-foreground text-xs">
           <Delta value={growthPct}>
             <DeltaIcon />

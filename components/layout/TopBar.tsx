@@ -5,8 +5,8 @@ interface TopBarProps {
 
 export default function TopBar({ title, action }: TopBarProps) {
   return (
-    <header className="h-14 px-6 flex items-center justify-between bg-white sticky top-0 z-20" style={{boxShadow: '0 1px 0 #EBEBEB'}}>
-      <h1 className="text-[15px] font-medium text-[#0A0A0A]">{title}</h1>
+    <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b bg-background/85 px-6 backdrop-blur-xl">
+      <h1 className="font-serif text-[21px] font-semibold text-foreground">{title}</h1>
       {action && <div className="flex items-center gap-2">{action}</div>}
     </header>
   )

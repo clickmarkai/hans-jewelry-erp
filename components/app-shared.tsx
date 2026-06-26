@@ -4,8 +4,6 @@ import {
   PackageIcon,
   ShoppingBagIcon,
   UsersIcon,
-  LayersIcon,
-  TruckIcon,
   BarChart2Icon,
   MessageSquareIcon,
   HelpCircleIcon,

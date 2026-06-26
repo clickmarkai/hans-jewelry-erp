@@ -15,11 +15,6 @@ import {
 } from '@/lib/mock-data'
 
 export default function AnalyticsPage() {
-  const categoryData = categoryRevenue.map((c) => ({
-    name: c.category,
-    value: c.revenue,
-  }))
-
   const channelData = channelRevenue.map((c) => ({
     name: c.channel,
     value: c.revenue,
@@ -45,25 +40,31 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-6">
+      <div>
+        <p className="maison-kicker">Maison intelligence</p>
+        <h1 className="font-serif text-3xl font-semibold text-foreground">Analytics</h1>
+        <p className="mt-1 text-sm text-muted-foreground">Revenue, inventory velocity, demand forecast, and customer channel mix.</p>
+      </div>
+
       {/* Revenue Section */}
       <section>
-        <h2 className="text-[13px] font-medium text-foreground mb-3">Revenue</h2>
-        <div className="grid grid-cols-3 gap-4 mb-4">
+        <h2 className="mb-3 font-serif text-2xl font-semibold text-foreground">Revenue</h2>
+        <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="rounded-md border bg-card p-4">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Revenue 90 Hari</p>
-            <p className="text-[22px] font-medium text-foreground mt-1">{formatRp(totalRevenue90d)}</p>
+            <p className="mt-1 font-serif text-[28px] font-semibold text-foreground">{formatRp(totalRevenue90d)}</p>
           </div>
           <div className="rounded-md border bg-card p-4">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Rata-rata/Hari</p>
-            <p className="text-[22px] font-medium text-foreground mt-1">{formatRp(avgDaily)}</p>
+            <p className="mt-1 font-serif text-[28px] font-semibold text-foreground">{formatRp(avgDaily)}</p>
           </div>
           <div className="rounded-md border bg-card p-4">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wide">Pertumbuhan MoM</p>
-            <p className="text-[22px] font-medium text-emerald-600 mt-1">+12%</p>
+            <p className="mt-1 font-serif text-[28px] font-semibold text-emerald-700">+12%</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           <div className="rounded-md border bg-card p-5">
             <p className="text-[13px] font-medium text-foreground mb-4">Revenue Harian — 90 Hari</p>
             <RevenueLineChart data={dailyRevenue} days={90} />
@@ -81,8 +82,8 @@ export default function AnalyticsPage() {
 
       {/* Inventory & Demand Section */}
       <section>
-        <h2 className="text-[13px] font-medium text-foreground mb-3">Inventory & Demand Forecast</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <h2 className="mb-3 font-serif text-2xl font-semibold text-foreground">Inventory & Demand Forecast</h2>
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           <div className="rounded-md border bg-card p-5">
             <div className="flex items-center justify-between mb-4">
               <p className="text-[13px] font-medium text-foreground">Demand Forecast — 12 Minggu</p>
@@ -113,8 +114,8 @@ export default function AnalyticsPage() {
 
       {/* Customer & Channel Section */}
       <section>
-        <h2 className="text-[13px] font-medium text-foreground mb-3">Pelanggan & Channel</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <h2 className="mb-3 font-serif text-2xl font-semibold text-foreground">Pelanggan & Channel</h2>
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           <div className="rounded-md border bg-card p-5">
             <p className="text-[13px] font-medium text-foreground mb-4">Revenue per Koleksi (MTD)</p>
             <DonutChart data={donutData} height={220} />
@@ -133,7 +134,7 @@ export default function AnalyticsPage() {
 
       {/* Monthly Summary Table */}
       <section>
-        <h2 className="text-[13px] font-medium text-foreground mb-3">Ringkasan Bulanan</h2>
+        <h2 className="mb-3 font-serif text-2xl font-semibold text-foreground">Ringkasan Bulanan</h2>
         <div className="rounded-md border bg-card overflow-hidden">
           <table className="w-full text-[12px]">
             <thead>

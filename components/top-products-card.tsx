@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { orders } from "@/lib/mock-data"
 import Link from "next/link"
+import { MaisonProductImage } from "@/components/maison"
 
 function computeTopProducts() {
   const revenue: Record<string, number> = {}
@@ -18,34 +19,30 @@ function computeTopProducts() {
 const topProducts = computeTopProducts()
 const maxRev = topProducts[0]?.revenue || 1
 
-const RANK_COLORS = [
-  'text-amber-500',
-  'text-slate-500',
-  'text-orange-400',
-  'text-slate-400',
-  'text-slate-400',
-]
-
 export function TopProductsCard() {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader className="flex flex-row items-center justify-between pb-3">
-        <CardTitle className="text-sm font-semibold">Top Products</CardTitle>
-        <Link href="/inventory" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-          View all →
+        <div>
+          <p className="maison-kicker">Assortment</p>
+          <CardTitle className="mt-1 text-xl">Top Products</CardTitle>
+        </div>
+        <Link href="/inventory" className="text-xs font-semibold text-muted-foreground hover:text-primary transition-colors">
+          View all
         </Link>
       </CardHeader>
       <CardContent className="space-y-3">
-        {topProducts.map((p) => (
+        {topProducts.map((p, index) => (
           <div key={p.name} className="flex items-center gap-3">
-            <span className={`text-sm font-bold w-5 text-right ${RANK_COLORS[p.rank - 1]}`}>
-              {p.rank}
-            </span>
+            <MaisonProductImage className="size-11 rounded-md border" slot={index} />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">{p.name}</p>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">0{p.rank}</span>
+                <p className="truncate text-sm font-semibold text-foreground">{p.name}</p>
+              </div>
               <div className="mt-1 h-1.5 rounded-full bg-muted overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-indigo-500"
+                  className="h-full rounded-full bg-primary"
                   style={{ width: `${(p.revenue / maxRev) * 100}%` }}
                 />
               </div>

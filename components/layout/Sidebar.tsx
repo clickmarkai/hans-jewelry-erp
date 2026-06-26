@@ -28,10 +28,10 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-60 bg-white border-r border-[#EBEBEB] flex flex-col z-30">
+    <aside className="fixed left-0 top-0 z-30 flex h-full w-60 flex-col border-r bg-sidebar">
       {/* Brand */}
-      <div className="px-4 pt-5 pb-4">
-        <span className="text-[13px] font-medium text-[#0A0A0A] tracking-tight">Hans Jewelry</span>
+      <div className="px-4 pb-4 pt-5">
+        <span className="font-serif text-[22px] font-semibold tracking-normal text-foreground">Hans Jewelry</span>
       </div>
 
       {/* Navigation */}
@@ -42,10 +42,10 @@ export default function Sidebar() {
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 px-3 py-2 text-[13px] rounded-[2px] transition-colors w-full ${
+              className={`flex w-full items-center gap-3 rounded-md px-3 py-2 text-[13px] transition-colors ${
                 isActive
-                  ? 'bg-[#0A0A0A] text-white'
-                  : 'text-[#737373] hover:text-[#0A0A0A] hover:bg-[#F0F0F0]'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:bg-accent hover:text-foreground'
               }`}
             >
               <Icon size={15} strokeWidth={1.75} className="shrink-0" />
@@ -56,9 +56,9 @@ export default function Sidebar() {
       </nav>
 
       {/* User footer */}
-      <div className="border-t border-[#E5E5E5] px-4 py-4">
-        <p className="text-[13px] font-medium text-[#0A0A0A]">Hans</p>
-        <p className="text-[11px] text-[#737373] mt-0.5">Owner · Hans Jewelry</p>
+      <div className="border-t px-4 py-4">
+        <p className="text-[13px] font-semibold text-foreground">Hans</p>
+        <p className="mt-0.5 text-[11px] text-muted-foreground">Owner · Hans Jewelry</p>
       </div>
     </aside>
   )

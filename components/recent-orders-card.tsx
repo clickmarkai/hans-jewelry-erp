@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { orders, formatRp, getStatusColor } from "@/lib/mock-data";
+import { MaisonProductImage } from "@/components/maison";
 
 const recentOrders = orders.slice(0, 6);
 
@@ -19,42 +20,41 @@ const variantMap: Record<string, "success" | "warning" | "error" | "secondary" |
 
 export function RecentOrdersCard() {
   return (
-    <Card className="md:col-span-2 lg:col-span-2">
+    <Card className="h-full">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Recent Orders</CardTitle>
-        <Link href="/orders" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-          View all →
+        <div>
+          <p className="maison-kicker">Order workflow</p>
+          <CardTitle className="mt-1">Recent Orders</CardTitle>
+        </div>
+        <Link href="/orders" className="text-xs font-semibold text-muted-foreground transition-colors hover:text-primary">
+          View all
         </Link>
       </CardHeader>
-      <CardContent className="p-0">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b">
-              <th className="text-left px-6 py-2.5 text-xs font-medium text-muted-foreground">Order</th>
-              <th className="text-left px-6 py-2.5 text-xs font-medium text-muted-foreground">Customer</th>
-              <th className="text-right px-6 py-2.5 text-xs font-medium text-muted-foreground">Total</th>
-              <th className="text-left px-6 py-2.5 text-xs font-medium text-muted-foreground">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recentOrders.map((order) => (
-              <tr key={order.id} className="border-b last:border-0 hover:bg-muted/40 transition-colors">
-                <td className="px-6 py-3 font-mono text-xs text-muted-foreground">
-                  {order.id.replace("ORD-2025-", "#")}
-                </td>
-                <td className="px-6 py-3 text-sm">{order.customerName}</td>
-                <td className="px-6 py-3 text-right text-sm font-medium tabular-nums">
-                  {formatRp(order.totalRp)}
-                </td>
-                <td className="px-6 py-3">
-                  <Badge variant={variantMap[getStatusColor(order.status)] ?? "secondary"} className="text-[10px]">
+      <CardContent className="divide-y p-0">
+        {recentOrders.map((order, index) => (
+          <Link
+            href="/orders"
+            key={order.id}
+            className="grid grid-cols-[auto_minmax(0,1fr)] gap-3 px-5 py-3 transition-colors hover:bg-muted/40"
+          >
+            <MaisonProductImage className="size-11 rounded-md border" slot={index} />
+            <div className="min-w-0">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-mono text-xs font-semibold text-foreground">{order.id.replace("ORD-2025-", "#")}</p>
+                  <p className="truncate text-sm font-semibold text-foreground">{order.customerName}</p>
+                  <p className="text-[11px] text-muted-foreground">{order.customerCity} · {order.items.length} items</p>
+                </div>
+                <div className="shrink-0 text-right">
+                  <p className="text-sm font-semibold tabular-nums text-foreground">{formatRp(order.totalRp)}</p>
+                  <Badge variant={variantMap[getStatusColor(order.status)] ?? "secondary"} className="mt-1 text-[10px]">
                     {order.status}
                   </Badge>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
       </CardContent>
     </Card>
   );

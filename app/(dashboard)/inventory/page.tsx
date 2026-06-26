@@ -6,14 +6,15 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import SlideOver from '@/components/layout/SlideOver'
 import { products, Product, formatRp, getStatusColor } from '@/lib/mock-data'
-import { Package, Plus, Download } from 'lucide-react'
+import { MaisonProductImage } from '@/components/maison'
+import { Plus, Download } from 'lucide-react'
 
 const TABS = ['All', 'Rings', 'Necklaces', 'Earrings', 'Bracelets', 'Pendants']
 
 function StockBar({ stock, reorderPoint }: { stock: number; reorderPoint: number }) {
   const max = Math.max(reorderPoint * 3, stock, 1)
   const pct = Math.min((stock / max) * 100, 100)
-  const color = stock === 0 ? 'bg-red-500' : stock <= reorderPoint ? 'bg-amber-400' : 'bg-emerald-500'
+  const color = stock === 0 ? 'bg-red-500' : stock <= reorderPoint ? 'bg-amber-500' : 'bg-emerald-600'
   return (
     <div className="flex items-center gap-2">
       <span className="tabular-nums font-medium w-6 text-right">{stock}</span>
@@ -36,7 +37,10 @@ export default function InventoryPage() {
     <div className="space-y-4">
       {/* Page header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold">Inventory</h1>
+        <div>
+          <p className="maison-kicker">Atelier stock</p>
+          <h1 className="font-serif text-3xl font-semibold">Inventory</h1>
+        </div>
         <div className="flex gap-2">
           <Button size="sm" variant="secondary">
             <Download size={13} strokeWidth={1.75} />
@@ -53,23 +57,23 @@ export default function InventoryPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-md border bg-card px-4 py-3">
           <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Total SKU</p>
-          <p className="text-2xl font-semibold text-foreground mt-0.5">{products.length}</p>
+          <p className="mt-0.5 font-serif text-[28px] font-semibold text-foreground">{products.length}</p>
         </div>
         <div className="rounded-md border bg-card px-4 py-3">
           <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">In Stock</p>
-          <p className="text-2xl font-semibold text-emerald-600 mt-0.5">
+          <p className="mt-0.5 font-serif text-[28px] font-semibold text-emerald-700">
             {products.filter((p) => p.status === 'In Stock').length}
           </p>
         </div>
         <div className="rounded-md border bg-card px-4 py-3">
           <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Low Stock</p>
-          <p className="text-2xl font-semibold text-amber-600 mt-0.5">
+          <p className="mt-0.5 font-serif text-[28px] font-semibold text-amber-700">
             {products.filter((p) => p.status === 'Low').length}
           </p>
         </div>
         <div className="rounded-md border bg-card px-4 py-3">
           <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Out of Stock</p>
-          <p className="text-2xl font-semibold text-red-500 mt-0.5">
+          <p className="mt-0.5 font-serif text-[28px] font-semibold text-red-600">
             {products.filter((p) => p.status === 'Out of Stock').length}
           </p>
         </div>
@@ -85,26 +89,32 @@ export default function InventoryPage() {
           <table className="w-full text-[13px]">
             <thead>
               <tr className="border-b bg-muted/40">
-                <th className="text-left px-4 py-3 text-muted-foreground font-medium">SKU</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Nama Produk</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Koleksi</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Material</th>
-                <th className="text-right px-4 py-3 text-muted-foreground font-medium">Berat</th>
-                <th className="text-right px-4 py-3 text-muted-foreground font-medium">Harga</th>
-                <th className="text-right px-4 py-3 text-muted-foreground font-medium">Stok</th>
-                <th className="text-right px-4 py-3 text-muted-foreground font-medium">Min.</th>
-                <th className="text-left px-4 py-3 text-muted-foreground font-medium">Status</th>
+                <th className="px-4 py-3 text-left">Produk</th>
+                <th className="px-4 py-3 text-left">Koleksi</th>
+                <th className="px-4 py-3 text-left">Material</th>
+                <th className="px-4 py-3 text-right">Berat</th>
+                <th className="px-4 py-3 text-right">Harga</th>
+                <th className="px-4 py-3 text-right">Stok</th>
+                <th className="px-4 py-3 text-right">Min.</th>
+                <th className="px-4 py-3 text-left">Status</th>
               </tr>
             </thead>
             <tbody>
-              {filtered.map((product) => (
+              {filtered.map((product, index) => (
                 <tr
                   key={product.id}
                   className="border-b last:border-0 hover:bg-muted/30 cursor-pointer transition-colors"
                   onClick={() => setSelected(product)}
                 >
-                  <td className="px-4 py-3 font-mono text-muted-foreground">{product.sku}</td>
-                  <td className="px-4 py-3 text-foreground font-medium">{product.name}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <MaisonProductImage className="size-10 rounded-md border" slot={index} alt={`${product.name} product photo`} />
+                      <div>
+                        <p className="font-semibold text-foreground">{product.name}</p>
+                        <p className="font-mono text-[11px] text-muted-foreground">{product.sku}</p>
+                      </div>
+                    </div>
+                  </td>
                   <td className="px-4 py-3 text-muted-foreground">{product.collection}</td>
                   <td className="px-4 py-3 text-muted-foreground">{product.material}</td>
                   <td className="px-4 py-3 text-right text-muted-foreground">{product.weightG}g</td>
@@ -127,9 +137,7 @@ export default function InventoryPage() {
       <SlideOver open={!!selected} onClose={() => setSelected(null)} title={selected?.name || ''}>
         {selected && (
           <div className="space-y-5">
-            <div className="aspect-square bg-muted/30 border rounded-md flex items-center justify-center">
-              <Package size={48} strokeWidth={1} className="text-muted-foreground/30" />
-            </div>
+            <MaisonProductImage className="aspect-square rounded-lg border" slot={products.findIndex((p) => p.id === selected.id)} alt={`${selected.name} product detail`} />
 
             <div className="grid grid-cols-2 gap-3 text-[13px]">
               <div>

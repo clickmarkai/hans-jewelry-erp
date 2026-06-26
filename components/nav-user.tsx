@@ -26,7 +26,7 @@ export function NavUser() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="size-8 cursor-pointer">
-          <AvatarFallback className="bg-foreground text-background text-xs font-medium">
+          <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
             H
           </AvatarFallback>
         </Avatar>
@@ -35,7 +35,7 @@ export function NavUser() {
         <DropdownMenuLabel>
           <div className="flex items-center gap-3">
             <Avatar className="size-9">
-              <AvatarFallback className="bg-foreground text-background text-sm font-medium">
+              <AvatarFallback className="bg-primary text-primary-foreground text-sm font-semibold">
                 H
               </AvatarFallback>
             </Avatar>

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import ChatMessageComponent from '@/components/chat/ChatMessage'
 import { chatSessions, ChatSession, ChatMessage } from '@/lib/mock-data'
-import { Send, Plus, MessageSquare, Sparkles, Search } from 'lucide-react'
+import { Send, Plus, MessageSquare, Sparkles } from 'lucide-react'
 
 const SUGGESTED = [
   'Produk terlaris minggu ini?',
@@ -17,6 +17,7 @@ export default function ChatPage() {
   const [activeId, setActiveId] = useState(chatSessions[0].id)
   const [input, setInput] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messageIdRef = useRef(0)
 
   const activeSession = sessions.find((s) => s.id === activeId)!
 
@@ -27,14 +28,16 @@ export default function ChatPage() {
   function handleSend(text?: string) {
     const message = text || input.trim()
     if (!message) return
+    messageIdRef.current += 1
+    const id = messageIdRef.current
 
     const userMsg: ChatMessage = {
-      id: `m${Date.now()}`,
+      id: `m-${id}-user`,
       role: 'user',
       content: message,
     }
     const aiMsg: ChatMessage = {
-      id: `m${Date.now() + 1}`,
+      id: `m-${id}-assistant`,
       role: 'assistant',
       content: 'This is demo mode. To activate real AI, connect the Hans Jewelry ERP to a Claude API key. Currently showing mock data as an example of the assistant capabilities.',
     }
@@ -50,11 +53,12 @@ export default function ChatPage() {
   }
 
   function handleNewChat() {
+    messageIdRef.current += 1
     const newSession: ChatSession = {
-      id: `chat-${Date.now()}`,
+      id: `chat-${messageIdRef.current}`,
       title: 'New Chat',
       messages: [],
-      createdAt: new Date().toISOString().split('T')[0],
+      createdAt: 'Today',
     }
     setSessions((prev) => [newSession, ...prev])
     setActiveId(newSession.id)
@@ -62,7 +66,7 @@ export default function ChatPage() {
 
   return (
     <div
-      className="flex overflow-hidden rounded-xl border bg-card -mt-3 sm:-mt-4 md:-mt-6 -mx-3 sm:-mx-4 md:-mx-6"
+      className="-mx-3 -mt-3 flex overflow-hidden rounded-lg border bg-card sm:-mx-4 sm:-mt-4 md:-mx-5 md:-mt-5"
       style={{ height: 'calc(100svh - 4rem)' }}
     >
       {/* Sidebar */}
@@ -71,7 +75,7 @@ export default function ChatPage() {
         <div className="p-3 border-b space-y-2">
           <button
             onClick={handleNewChat}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors"
+            className="flex w-full items-center justify-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
           >
             <Plus size={13} strokeWidth={2.5} />
             New Chat
@@ -87,7 +91,7 @@ export default function ChatPage() {
               onClick={() => setActiveId(session.id)}
               className={`w-full text-left px-3 py-2.5 rounded-lg text-xs transition-colors group ${
                 session.id === activeId
-                  ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300'
+                  ? 'bg-primary/10 text-primary'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
               }`}
             >
@@ -114,12 +118,12 @@ export default function ChatPage() {
       {/* Main chat area */}
       <div className="flex-1 flex flex-col overflow-hidden bg-background/50">
         {/* Chat header */}
-        <div className="px-6 py-3 border-b flex items-center gap-3 bg-card/50 backdrop-blur-sm">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
+        <div className="flex items-center gap-3 border-b bg-card/60 px-6 py-3 backdrop-blur-sm">
+          <div className="flex size-8 items-center justify-center rounded-md bg-primary">
             <Sparkles size={14} strokeWidth={2} className="text-white" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-foreground leading-tight">{activeSession.title}</p>
+            <p className="font-serif text-xl font-semibold leading-tight text-foreground">{activeSession.title}</p>
             <p className="text-[11px] text-muted-foreground">Hans Jewelry AI · Powered by Claude</p>
           </div>
         </div>
@@ -128,10 +132,10 @@ export default function ChatPage() {
         <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 space-y-6">
           {activeSession.messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center px-4">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center mb-4 shadow-lg shadow-indigo-500/25">
+              <div className="mb-4 flex size-14 items-center justify-center rounded-lg bg-primary shadow-lg shadow-primary/15">
                 <Sparkles size={24} strokeWidth={1.75} className="text-white" />
               </div>
-              <h3 className="text-base font-semibold text-foreground">Ask anything about your business</h3>
+              <h3 className="font-serif text-2xl font-semibold text-foreground">Ask anything about your business</h3>
               <p className="text-sm text-muted-foreground mt-2 max-w-xs leading-relaxed">
                 Analyze sales, inventory, customers, revenue trends, and more with AI-powered insights.
               </p>
@@ -140,7 +144,7 @@ export default function ChatPage() {
                   <button
                     key={s}
                     onClick={() => handleSend(s)}
-                    className="px-3 py-2.5 text-xs text-left border rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 hover:border-indigo-200 transition-all leading-snug"
+                    className="rounded-md border px-3 py-2.5 text-left text-xs leading-snug text-muted-foreground transition-all hover:border-primary/30 hover:bg-accent hover:text-foreground"
                   >
                     {s}
                   </button>
@@ -164,7 +168,7 @@ export default function ChatPage() {
               <button
                 key={s}
                 onClick={() => handleSend(s)}
-                className="shrink-0 px-3 py-1.5 text-[11px] font-medium border rounded-full text-muted-foreground hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-400 transition-all whitespace-nowrap"
+                className="shrink-0 whitespace-nowrap rounded-md border px-3 py-1.5 text-[11px] font-semibold text-muted-foreground transition-all hover:border-primary/30 hover:bg-accent hover:text-primary"
               >
                 {s}
               </button>
@@ -182,13 +186,13 @@ export default function ChatPage() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Ask about your business data..."
-                className="w-full px-4 py-3 text-sm border rounded-xl bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-indigo-400/50 focus:border-indigo-400 transition-all"
+                className="w-full rounded-md border bg-card px-4 py-3 text-sm text-foreground transition-all placeholder:text-muted-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/10"
               />
             </div>
             <button
               onClick={() => handleSend()}
               disabled={!input.trim()}
-              className="w-10 h-10 flex items-center justify-center bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm shadow-indigo-500/30"
+              className="flex size-10 items-center justify-center rounded-md bg-primary text-white shadow-sm shadow-primary/20 transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Send size={15} strokeWidth={2} />
             </button>

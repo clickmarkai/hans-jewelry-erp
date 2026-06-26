@@ -4,35 +4,35 @@ import { ShoppingBag, UserPlus, Package, TrendingUp } from "lucide-react"
 const activities = [
   {
     icon: ShoppingBag,
-    iconBg: "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400",
+    iconBg: "bg-primary/10 text-primary",
     title: "New order #0420",
     desc: "Sari Dewi · Rp 630.000",
     time: "2 min ago",
   },
   {
     icon: UserPlus,
-    iconBg: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+    iconBg: "bg-emerald-50 text-emerald-700",
     title: "New customer",
     desc: "Ayu Wulandari joined",
     time: "1 hour ago",
   },
   {
     icon: Package,
-    iconBg: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+    iconBg: "bg-amber-50 text-amber-800",
     title: "Low stock alert",
     desc: "Minimal Stack Ring · 3 left",
     time: "3 hours ago",
   },
   {
     icon: TrendingUp,
-    iconBg: "bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400",
+    iconBg: "bg-rose-50 text-rose-700",
     title: "Revenue milestone",
     desc: "Rp 38jt MTD · +12% vs last month",
     time: "Today",
   },
   {
     icon: ShoppingBag,
-    iconBg: "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400",
+    iconBg: "bg-primary/10 text-primary",
     title: "Order delivered",
     desc: "Emma van der Berg · Rp 570.000",
     time: "Yesterday",
@@ -41,14 +41,15 @@ const activities = [
 
 export function ActivityFeed() {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-semibold">Recent Activity</CardTitle>
+        <p className="maison-kicker">Live feed</p>
+        <CardTitle className="mt-1 text-xl">Recent Activity</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {activities.map((a, i) => (
           <div key={i} className="flex items-start gap-3">
-            <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${a.iconBg}`}>
+            <div className={`flex size-8 shrink-0 items-center justify-center rounded-md border border-current/10 ${a.iconBg}`}>
               <a.icon size={13} strokeWidth={2} />
             </div>
             <div className="flex-1 min-w-0">

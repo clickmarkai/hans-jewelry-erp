@@ -22,10 +22,10 @@ export default function ChatMessage({ message }: ChatMessageProps) {
     return (
       <div className="flex justify-end">
         <div className="flex items-end gap-2.5 max-w-[75%]">
-          <div className="px-4 py-3 rounded-2xl rounded-br-sm bg-indigo-600 text-white text-sm leading-relaxed shadow-sm shadow-indigo-500/20">
+          <div className="rounded-lg rounded-br-sm bg-primary px-4 py-3 text-sm leading-relaxed text-white shadow-sm shadow-primary/20">
             {message.content}
           </div>
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center text-[11px] font-semibold text-white shrink-0 mb-0.5">
+          <div className="mb-0.5 flex size-7 shrink-0 items-center justify-center rounded-md bg-foreground text-[11px] font-semibold text-background">
             H
           </div>
         </div>
@@ -36,13 +36,13 @@ export default function ChatMessage({ message }: ChatMessageProps) {
   return (
     <div className="flex items-start gap-3 max-w-[85%]">
       {/* AI Avatar */}
-      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shrink-0 mt-0.5">
+      <div className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-md bg-primary">
         <Sparkles size={13} strokeWidth={2} className="text-white" />
       </div>
 
       {/* Content */}
       <div className="flex flex-col gap-3 min-w-0">
-        <div className="px-4 py-3 rounded-2xl rounded-tl-sm bg-card border text-sm leading-relaxed text-foreground">
+        <div className="rounded-lg rounded-tl-sm border bg-card px-4 py-3 text-sm leading-relaxed text-foreground">
           {message.content.split('\n').map((line, i) => {
             const formatted = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
             return (
@@ -59,7 +59,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
 
         {/* Inline chart */}
         {message.chartType === 'bar' && message.chartData != null && (
-          <div className="w-full border rounded-xl bg-card p-4 shadow-sm">
+          <div className="w-full rounded-lg border bg-card p-4">
             <CategoryBarChart
               data={(message.chartData as BarDataItem[]).map((d) => ({
                 name: d.name,
@@ -73,7 +73,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
         )}
 
         {message.chartType === 'donut' && message.chartData && (
-          <div className="w-full border rounded-xl bg-card p-4 shadow-sm">
+          <div className="w-full rounded-lg border bg-card p-4">
             <DonutChart
               data={message.chartData as DonutDataItem[]}
               height={200}
@@ -82,7 +82,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
         )}
 
         {message.chartType === 'table' && message.chartData && (
-          <div className="w-full border rounded-xl overflow-hidden shadow-sm">
+          <div className="w-full overflow-hidden rounded-lg border">
             <table className="w-full text-[12px]">
               <thead>
                 <tr className="border-b bg-muted/50">

@@ -25,7 +25,7 @@ export function NavGroup({ label, items }: SidebarNavGroup) {
 
   return (
     <SidebarGroup>
-      {label && <SidebarGroupLabel>{label}</SidebarGroupLabel>}
+      {label && <SidebarGroupLabel className="px-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/80">{label}</SidebarGroupLabel>}
       <SidebarMenu>
         {items.map((item) => {
           const isActive = item.path
